@@ -36,7 +36,7 @@ a:hover {
 
 :root {
   --site-bg: rgb(248, 242, 234);
-  --header-overlay: rgba(116, 81, 49, 0.78);
+  --header-overlay: rgba(35, 15, 3, 0.90);
   --color-dark: rgb(116, 81, 49);
   --color-tan: rgb(210, 192, 172);
   --color-mid: rgb(130, 88, 63);
@@ -356,19 +356,38 @@ li, p {
   color: rgb(50, 30, 12);
 }
 
-/* ── Embed wrapper ─────────────────────────────────────── */
-.release-embed-wrapper {
+/* ── Embeds grid (releases 2×2) ────────────────────────── */
+.embeds-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
   width: 100%;
-  max-width: 660px;
+  max-width: 960px;
   margin: 0 auto;
-  box-shadow: 0 4px 20px rgba(116, 81, 49, 0.15);
-  border-radius: 12px;
-  overflow: hidden;
 }
 
-/* ── Our Favorite Moments collage ──────────────────────── */
+.embed-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.embed-cell iframe {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(116, 81, 49, 0.15);
+  display: block;
+  flex-shrink: 0;
+}
+
+.embed-cell .album-container {
+  width: 100%;
+  flex: none;
+  max-width: 100%;
+}
+
+/* ── Our Favorite Moments carousel ─────────────────────── */
 .collage-section {
-  padding: 3rem 2rem 3.5rem;
+  padding: 3rem 1.5rem 3.5rem;
   background-color: var(--color-tan);
 }
 
@@ -377,45 +396,123 @@ li, p {
   margin-bottom: 1.75rem;
 }
 
-.collage-grid {
-  columns: 3;
-  column-gap: 0.6rem;
-  max-width: 1100px;
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-.collage-item {
-  width: 100%;
-  margin-bottom: 0.6rem;
-  break-inside: avoid;
-  border-radius: 8px;
-  display: block;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+.carousel-frame {
+  flex: 1;
+  cursor: zoom-in;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 28px rgba(116, 81, 49, 0.22);
 }
 
-.collage-item:hover {
-  transform: scale(1.025);
-  opacity: 0.9;
-  cursor: zoom-in;
+.carousel-img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.carousel-img:hover {
+  transform: scale(1.02);
+}
+
+.carousel-btn {
+  background: rgb(116, 81, 49);
+  color: rgb(232, 183, 107);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn:hover {
+  background: rgb(130, 88, 63);
+  transform: scale(1.1);
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgb(130, 88, 63);
+  opacity: 0.35;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, opacity 0.2s;
+}
+
+.carousel-dot.active {
+  background: rgb(116, 81, 49);
+  opacity: 1;
+  transform: scale(1.35);
+}
+
+/* ── Lightbox ───────────────────────────────────────────── */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 2, 0.90);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.7);
+  cursor: default;
 }
 
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .collage-grid {
-    columns: 2;
+  .embeds-grid {
+    grid-template-columns: 1fr;
+  }
+  .carousel-img {
+    height: 260px;
   }
   .navbar-links {
     flex-direction: column;
     text-align: center;
   }
-  .featured-album {
-    flex-direction: column;
-    align-items: center;
-  }
 }
 
 @media (max-width: 480px) {
-  .collage-grid {
-    columns: 1;
+  .carousel-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+  }
+  .carousel-img {
+    height: 220px;
   }
 }

@@ -44,6 +44,20 @@ function App() {
     },
   ];
 
+  const collageImages = [
+    { src: "images/Collage/Firefly_GeminiFlash_Close up of the 4 of them together, all smiling. Professional photo shoot wearing hip 169102.jpg", alt: "Band moment" },
+    { src: "images/Collage/Firefly_GeminiFlash_Professional pop group portrait of all 7 of them in a unique setting and in different 181489.png", alt: "Band portrait" },
+    { src: "images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 501103.png", alt: "Band fun" },
+    { src: "images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 591272.png", alt: "Band fun" },
+    { src: "images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 790781.png", alt: "Band fun" },
+    { src: "images/Collage/Firefly_GeminiFlash_The 4 of them together, all smiling and goofing around. Professional photo shoot wear 263443.png", alt: "Band fun" },
+    { src: "images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 816982.png", alt: "Horseback riding" },
+    { src: "images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 984380.jpg", alt: "Horseback riding" },
+    { src: "images/Collage/Firefly_GeminiFlash_They are on an adventure together. 985742.jpg", alt: "Band adventure" },
+  ];
+  const [collageIndex, setCollageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
   return (
     <Routes>
       <Route path="/" element={
@@ -96,9 +110,8 @@ function App() {
           {/* Releases Section */}
           <section className="releases-section" id="releases">
             <h2>Releases</h2>
-            <div className="releases-grid">
-              {/* Latest single — top of list */}
-              <div className="release-embed-wrapper">
+            <div className="embeds-grid">
+              <div className="embed-cell">
                 <iframe
                   data-testid="embed-iframe"
                   style={{ borderRadius: '12px' }}
@@ -111,9 +124,7 @@ function App() {
                   loading="lazy"
                 />
               </div>
-
-              {/* Even Better Christmas — full album */}
-              <div className="release-embed-wrapper">
+              <div className="embed-cell">
                 <iframe
                   data-testid="embed-iframe"
                   style={{ borderRadius: '12px' }}
@@ -126,37 +137,53 @@ function App() {
                   loading="lazy"
                 />
               </div>
-
-              {/* Other releases */}
-              <div className="featured-album">
-                {albums.map((album) => (
+              {albums.map((album) => (
+                <div className="embed-cell" key={album.id}>
                   <AlbumItem
-                    key={album.id}
                     spotifyLink={album.spotifyLink}
                     youtubeMusicLink={album.youtubeMusicLink}
                     youtubeLink={album.youtubeLink}
                     appleMusicLink={album.appleMusicLink}
                     amazonMusicLink={album.amazonMusicLink}
                   />
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </section>
 
-          {/* Our Favorite Moments Collage */}
+          {/* Our Favorite Moments Carousel */}
           <section className="collage-section">
             <h2>Our Favorite Moments</h2>
-            <div className="collage-grid">
-              <img src="images/Collage/Firefly_GeminiFlash_Close up of the 4 of them together, all smiling. Professional photo shoot wearing hip 169102.jpg" alt="Band moment" className="collage-item" loading="lazy" />
-              <img src="images/Collage/Firefly_GeminiFlash_Professional pop group portrait of all 7 of them in a unique setting and in different 181489.png" alt="Band portrait" className="collage-item" loading="lazy" />
-              <img src="images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 501103.png" alt="Band fun" className="collage-item" loading="lazy" />
-              <img src="images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 591272.png" alt="Band fun" className="collage-item" loading="lazy" />
-              <img src="images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 790781.png" alt="Band fun" className="collage-item" loading="lazy" />
-              <img src="images/Collage/Firefly_GeminiFlash_The 4 of them together, all smiling and goofing around. Professional photo shoot wear 263443.png" alt="Band fun" className="collage-item" loading="lazy" />
-              <img src="images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 816982.png" alt="Horseback riding adventure" className="collage-item" loading="lazy" />
-              <img src="images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 984380.jpg" alt="Horseback riding adventure" className="collage-item" loading="lazy" />
-              <img src="images/Collage/Firefly_GeminiFlash_They are on an adventure together. 985742.jpg" alt="Band adventure" className="collage-item" loading="lazy" />
+            <div className="carousel">
+              <button className="carousel-btn" onClick={() => setCollageIndex(i => (i - 1 + collageImages.length) % collageImages.length)} aria-label="Previous photo">&#8249;</button>
+              <div className="carousel-frame" onClick={() => setLightboxOpen(true)} title="Click to enlarge">
+                <img
+                  src={collageImages[collageIndex].src}
+                  alt={collageImages[collageIndex].alt}
+                  className="carousel-img"
+                />
+              </div>
+              <button className="carousel-btn" onClick={() => setCollageIndex(i => (i + 1) % collageImages.length)} aria-label="Next photo">&#8250;</button>
             </div>
+            <div className="carousel-dots">
+              {collageImages.map((_, i) => (
+                <span
+                  key={i}
+                  className={`carousel-dot${i === collageIndex ? ' active' : ''}`}
+                  onClick={() => setCollageIndex(i)}
+                />
+              ))}
+            </div>
+            {lightboxOpen && (
+              <div className="lightbox-overlay" onClick={() => setLightboxOpen(false)}>
+                <img
+                  src={collageImages[collageIndex].src}
+                  alt={collageImages[collageIndex].alt}
+                  className="lightbox-img"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            )}
           </section>
 
           {/* About Section */}
