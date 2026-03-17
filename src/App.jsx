@@ -57,6 +57,14 @@ function App() {
   ];
   const [collageIndex, setCollageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [sliding, setSliding] = useState(false);
+
+  const advanceCarousel = (dir) => {
+    if (sliding) return;
+    setSliding(true);
+    setCollageIndex(i => (i + dir + collageImages.length) % collageImages.length);
+    setTimeout(() => setSliding(false), 420);
+  };
 
   return (
     <Routes>
@@ -154,25 +162,28 @@ function App() {
           {/* Our Favorite Moments Carousel */}
           <section className="collage-section">
             <h2>Our Favorite Moments</h2>
-            <div className="carousel">
-              <button className="carousel-btn" onClick={() => setCollageIndex(i => (i - 1 + collageImages.length) % collageImages.length)} aria-label="Previous photo">&#8249;</button>
-              <div className="carousel-frame" onClick={() => setLightboxOpen(true)} title="Click to enlarge">
-                <img
-                  src={collageImages[collageIndex].src}
-                  alt={collageImages[collageIndex].alt}
-                  className="carousel-img"
-                />
+            <div className="tray-root">
+              {/* translate: start at 20% so slide 0 is centered (100%-60%)/2 = 20%),
+                  then subtract 60% per index step */}
+              <div className="tray-track" style={{ transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))` }}>
+                {collageImages.map((img, i) => {
+                  const isCenter = i === collageIndex;
+                  return (
+                    <div
+                      key={i}
+                      className={`tray-slide${isCenter ? ' center' : ''}`}
+                      onClick={isCenter ? () => setLightboxOpen(true) : undefined}
+                      title={isCenter ? 'Click to enlarge' : undefined}
+                    >
+                      <img src={img.src} alt={img.alt} className="tray-img" loading="lazy" />
+                    </div>
+                  );
+                })}
               </div>
-              <button className="carousel-btn" onClick={() => setCollageIndex(i => (i + 1) % collageImages.length)} aria-label="Next photo">&#8250;</button>
-            </div>
-            <div className="carousel-dots">
-              {collageImages.map((_, i) => (
-                <span
-                  key={i}
-                  className={`carousel-dot${i === collageIndex ? ' active' : ''}`}
-                  onClick={() => setCollageIndex(i)}
-                />
-              ))}
+              <div className="tray-fade-left" />
+              <div className="tray-fade-right" />
+              <button className="tray-btn tray-btn-left" onClick={() => advanceCarousel(-1)} aria-label="Previous photo">&#8249;</button>
+              <button className="tray-btn tray-btn-right" onClick={() => advanceCarousel(1)} aria-label="Next photo">&#8250;</button>
             </div>
             {lightboxOpen && (
               <div className="lightbox-overlay" onClick={() => setLightboxOpen(false)}>

@@ -385,91 +385,115 @@ li, p {
   max-width: 100%;
 }
 
-/* ── Our Favorite Moments carousel ─────────────────────── */
+/* ── Our Favorite Moments tray ───────────────────────── */
 .collage-section {
-  padding: 3rem 1.5rem 3.5rem;
+  padding: 3rem 0 3.5rem;
   background-color: var(--color-tan);
+  overflow: hidden;
 }
 
 .collage-section h2 {
   text-align: center;
   margin-bottom: 1.75rem;
+  padding: 0 1.5rem;
 }
 
-.carousel {
+/* The outer viewport — clips overflow, full width */
+.tray-root {
+  --slide-w: 60%;        /* center slide occupies 60% of tray width  */
+  --side-w: 20%;         /* each neighbour gets 20% (half visible)    */
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 400px;
+}
+
+/* The sliding track — wide enough to hold all slides side by side */
+.tray-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Each slide sits in a fixed-width slot */
+.tray-slide {
+  flex: 0 0 var(--slide-w);
+  height: 100%;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  max-width: 800px;
-  margin: 0 auto;
+  transition: flex-basis 0.38s cubic-bezier(0.4,0,0.2,1);
 }
 
-.carousel-frame {
-  flex: 1;
-  cursor: zoom-in;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 28px rgba(116, 81, 49, 0.22);
-}
-
-.carousel-img {
+.tray-img {
   width: 100%;
-  height: 400px;
+  height: 360px;
   object-fit: cover;
+  border-radius: 14px;
   display: block;
-  border-radius: 12px;
-  transition: transform 0.3s ease;
+  transition: height 0.38s cubic-bezier(0.4,0,0.2,1), box-shadow 0.38s;
+  box-shadow: 0 4px 18px rgba(116,81,49,0.13);
 }
 
-.carousel-img:hover {
-  transform: scale(1.02);
+.tray-slide.center .tray-img {
+  height: 400px;
+  box-shadow: 0 10px 40px rgba(116,81,49,0.30);
+  cursor: zoom-in;
 }
 
-.carousel-btn {
-  background: rgb(116, 81, 49);
+/* Edge fade overlays — pointer-events:none so clicks pass through */
+.tray-fade-left,
+.tray-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tray-fade-left {
+  left: 0;
+  background: linear-gradient(to right, var(--color-tan) 0%, transparent 100%);
+}
+
+.tray-fade-right {
+  right: 0;
+  background: linear-gradient(to left, var(--color-tan) 0%, transparent 100%);
+}
+
+/* Overlay arrow buttons */
+.tray-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(35, 15, 3, 0.45);
   color: rgb(232, 183, 107);
   border: none;
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   font-size: 2rem;
   line-height: 1;
   cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.2s, transform 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+  backdrop-filter: blur(4px);
 }
 
-.carousel-btn:hover {
-  background: rgb(130, 88, 63);
-  transform: scale(1.1);
+.tray-btn:hover {
+  background: rgba(116, 81, 49, 0.80);
+  transform: translateY(-50%) scale(1.1);
 }
 
-.carousel-dots {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.carousel-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgb(130, 88, 63);
-  opacity: 0.35;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s, opacity 0.2s;
-}
-
-.carousel-dot.active {
-  background: rgb(116, 81, 49);
-  opacity: 1;
-  transform: scale(1.35);
-}
+.tray-btn-left  { left: calc(var(--side-w) + 0.75rem); }
+.tray-btn-right { right: calc(var(--side-w) + 0.75rem); }
 
 /* ── Lightbox ───────────────────────────────────────────── */
 .lightbox-overlay {
@@ -497,9 +521,13 @@ li, p {
   .embeds-grid {
     grid-template-columns: 1fr;
   }
-  .carousel-img {
-    height: 260px;
+  .tray-root {
+    height: 280px;
+    --slide-w: 78%;
+    --side-w: 11%;
   }
+  .tray-img { height: 240px; }
+  .tray-slide.center .tray-img { height: 280px; }
   .navbar-links {
     flex-direction: column;
     text-align: center;
@@ -507,12 +535,11 @@ li, p {
 }
 
 @media (max-width: 480px) {
-  .carousel-btn {
-    width: 38px;
-    height: 38px;
+  .tray-btn {
+    width: 36px;
+    height: 36px;
     font-size: 1.5rem;
   }
-  .carousel-img {
-    height: 220px;
-  }
+  .tray-btn-left  { left: calc(var(--side-w) + 0.25rem); }
+  .tray-btn-right { right: calc(var(--side-w) + 0.25rem); }
 }
