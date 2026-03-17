@@ -122,8 +122,9 @@ input[type="radio"] {
 
 .hero-image {
   width: 100%;
+  height: auto;
   max-height: 100vh;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .newsletter-section {

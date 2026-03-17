@@ -88,8 +88,8 @@ function App() {
           <header className="hero-section">
             <img
               className="hero-image"
-              src="images/site-banners/YMBG.jpg"
-              alt="The Gracechase band in an epic silhouette with a golden lit background"
+              src="images/site-banners/GC Studio Banner YT.jpg"
+              alt="Gracechase studio banner"
             />
           </header>
 
