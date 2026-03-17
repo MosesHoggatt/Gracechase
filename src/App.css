@@ -1,21 +1,17 @@
 /* 
 Color Palette
-White: #ffffff
-Light Gray: #f5f5f5
-Black: #000000
-Dark Brown: #291605
-Gold: #D4AF37
-Border Gray: #e0e0e0
-Secondary Text: #666666
-Muted Text: #999999
+Dark Brown:  rgb(116, 81, 49)
+Tan / Beige: rgb(210, 192, 172)
+Mid Brown:   rgb(130, 88, 63)
+Warm Gold:   rgb(232, 183, 107)
 */
 
 /* Typography Scale */
-h1 { font-size: 2.5rem; font-weight: 600; color: #000000; }
-h2 { font-size: 2rem; font-weight: 600; color: #291605; }
-h3 { font-size: 1.5rem; font-weight: 600; color: #000000; }
-p { font-size: 1rem; line-height: 1.6; color: #000000; }
-small { font-size: 0.875rem; color: #666666; }
+h1 { font-size: 2.5rem; font-weight: 700; color: rgb(116, 81, 49); }
+h2 { font-size: 2rem; font-weight: 700; color: rgb(116, 81, 49); }
+h3 { font-size: 1.25rem; font-weight: 600; color: rgb(130, 88, 63); }
+p { font-size: 1rem; line-height: 1.7; color: rgb(50, 30, 12); }
+small { font-size: 0.875rem; color: rgb(130, 88, 63); }
 
 *
  {
@@ -29,25 +25,26 @@ html {
 }
 
 a {
-  color: #D4AF37;
+  color: rgb(130, 88, 63);
   text-decoration: none;
 }
 
 a:hover {
-  color: #D4AF37;
+  color: rgb(232, 183, 107);
   text-decoration: underline;
 }
 
 :root {
-  /* Defaults used on main page */
-  --site-bg: #ffffff;
-  --header-overlay: rgba(0, 0, 0, 0.7);
+  --site-bg: rgb(248, 242, 234);
+  --header-overlay: rgba(116, 81, 49, 0.78);
+  --color-dark: rgb(116, 81, 49);
+  --color-tan: rgb(210, 192, 172);
+  --color-mid: rgb(130, 88, 63);
+  --color-gold: rgb(232, 183, 107);
 }
 
-/* When on any route other than '/', apply subpage overrides */
 html.subpage {
-  /* Override only what you want different on subpages */
-  --site-bg: #555555; /* dark gray background for specified subpages */
+  --site-bg: rgb(55, 33, 16);
 }
 
 #root {
@@ -68,9 +65,8 @@ input, select, textarea {
 input[type="checkbox"],
 input[type="radio"] {
   background-color: #ffffff;
-  /* accent-color controls the check/filled color in modern browsers */
-  accent-color: #D4AF37;
-  border: 1px solid #e0e0e0;
+  accent-color: rgb(232, 183, 107);
+  border: 1px solid rgb(210, 192, 172);
 }
 
 .main-page {
@@ -112,7 +108,7 @@ input[type="radio"] {
 }
 
 .nav-link:hover {
-  color: #D4AF37; /* Gold on hover */
+  color: rgb(232, 183, 107);
   text-decoration: underline;
 }
 
@@ -122,16 +118,17 @@ input[type="radio"] {
 
 .hero-image {
   width: 100%;
-  height: auto;
-  max-height: 100vh;
-  object-fit: contain;
+  height: 40vh;
+  display: block;
+  object-fit: cover;
+  object-position: center 23%;
 }
 
 .newsletter-section {
   padding: 2rem;
-  background-color: #f5f5f5; /* Light gray to match other sections */
-  border-radius: 12px;
-  margin-bottom: 2rem;
+  background-color: var(--color-tan);
+  border-radius: 0;
+  margin-bottom: 0;
 }
 
 .newsletter-container {
@@ -143,11 +140,11 @@ input[type="radio"] {
 .releases-section {
   display: flex;
   flex-direction: column;
-  
-  padding: 3rem;
-  background-color: #f5f5f5; /* Light gray */
-  border-radius: 12px;
-  margin-bottom: 3rem;
+  padding: 3rem 2rem;
+  background-color: rgba(210, 192, 172, 0.22);
+  border-radius: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .releases-section h2 {
@@ -158,8 +155,10 @@ input[type="radio"] {
 .releases-grid {
   display: flex;
   flex-direction: column;
-  /* Keep a constant, comfortable vertical gap between rows */
-  gap: 28px;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .featured-album {
@@ -213,10 +212,10 @@ input[type="radio"] {
 }
 
 .about-section {
-  padding: 2rem;
-  background-color: #f5f5f5; /* Light gray */
-  border-radius: 12px;
-  margin-bottom: 2rem;
+  padding: 3rem 2rem;
+  background-color: var(--color-tan);
+  border-radius: 0;
+  margin-bottom: 0;
   text-align: center;
 }
 
@@ -256,13 +255,21 @@ input[type="radio"] {
 }
 
 .about-subsection strong {
-  color: #D4AF37;
+  color: rgb(232, 183, 107);
 }
 
 .footer {
-  padding: 1rem;
+  padding: 2rem 1rem;
   text-align: center;
-  background-color: #f5f5f5;
+  background-color: rgb(116, 81, 49);
+}
+
+.footer a {
+  color: rgb(232, 183, 107);
+}
+
+.footer a:hover {
+  color: rgb(210, 192, 172);
 }
 
 .footer-content {
@@ -272,6 +279,7 @@ input[type="radio"] {
 
 .footer-content p {
   font-size: 0.875rem;
+  color: rgb(210, 192, 172);
 }
 
 /* Utility and other styles */
@@ -282,7 +290,7 @@ input[type="radio"] {
 .platform-link {
   display: block;
   margin: 0.5rem 0;
-  color: #D4AF37; /* Gold */
+  color: rgb(232, 183, 107);
   text-decoration: none;
 }
 
@@ -291,26 +299,21 @@ input[type="radio"] {
 }
 
 .what-weve-been-up-to {
-  background-color: #f5f5f5; /* Light gray */
+  background-color: var(--color-tan);
   padding: 1rem;
   border-radius: 8px;
-  border: 1px solid #e0e0e0; /* Border gray */
+  border: 1px solid rgb(130, 88, 63);
 }
 
-.releases-section{
-  margin-top: 4rem;
-  padding-top: 2rem;
-  padding-bottom: 4rem;
-  margin-bottom: 4rem;
-}
+/* .releases-section second block consolidated above */
 
 .album-release,
 .blog-post {
   margin-bottom: 1rem;
   padding: 1rem;
-  background-color: #ffffff; /* White */
+  background-color: #ffffff;
   border-radius: 4px;
-  border-left: 4px solid #D4AF37; /* Gold accent */
+  border-left: 4px solid rgb(232, 183, 107);
 }
 
 .album-release img {
@@ -319,7 +322,7 @@ input[type="radio"] {
 }
 
 .blog-post a {
-  color: #D4AF37; /* Gold */
+  color: rgb(232, 183, 107);
   text-decoration: none;
   font-weight: bold;
 }
@@ -330,9 +333,9 @@ input[type="radio"] {
 
 .meet-the-crew-section {
   padding: 2rem;
-  background-color: #f5f5f5; /* Light gray */
+  background-color: var(--color-tan);
   border-radius: 8px;
-  border: 1px solid #e0e0e0; /* Border gray */
+  border: 1px solid rgb(130, 88, 63);
   margin-bottom: 2rem;
 }
 
@@ -349,14 +352,57 @@ input[type="radio"] {
   padding: 2em;
 }
 
-li, p, h1, h2, h3, h4, h5, h6 {
-  color: #000000;
+li, p {
+  color: rgb(50, 30, 12);
 }
 
-/* Responsive adjustments */
+/* ── Embed wrapper ─────────────────────────────────────── */
+.release-embed-wrapper {
+  width: 100%;
+  max-width: 660px;
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(116, 81, 49, 0.15);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ── Our Favorite Moments collage ──────────────────────── */
+.collage-section {
+  padding: 3rem 2rem 3.5rem;
+  background-color: var(--color-tan);
+}
+
+.collage-section h2 {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.collage-grid {
+  columns: 3;
+  column-gap: 0.6rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.collage-item {
+  width: 100%;
+  margin-bottom: 0.6rem;
+  break-inside: avoid;
+  border-radius: 8px;
+  display: block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.collage-item:hover {
+  transform: scale(1.025);
+  opacity: 0.9;
+  cursor: zoom-in;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .releases-grid {
-    grid-template-columns: 1fr;
+  .collage-grid {
+    columns: 2;
   }
   .navbar-links {
     flex-direction: column;
@@ -364,6 +410,12 @@ li, p, h1, h2, h3, h4, h5, h6 {
   }
   .featured-album {
     flex-direction: column;
-    align-items: center; /* keep single column items centered */
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .collage-grid {
+    columns: 1;
   }
 }

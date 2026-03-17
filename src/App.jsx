@@ -97,18 +97,37 @@ function App() {
           <section className="releases-section" id="releases">
             <h2>Releases</h2>
             <div className="releases-grid">
-              {/* Coming soon cover on its own row above current album embeds */}
-              <div className="coming-soon-card">
-                <div className="coming-soon-inner">
-                  <img
-                    src="images/album-covers/Even Better Christmas Cover Coming Soon 1000px.jpg"
-                    alt="Even Better Christmas — Coming Soon"
-                    loading="lazy"
-                  />
-                </div>
+              {/* Latest single — top of list */}
+              <div className="release-embed-wrapper">
+                <iframe
+                  data-testid="embed-iframe"
+                  style={{ borderRadius: '12px' }}
+                  src="https://open.spotify.com/embed/track/3s3asweuLKqLHG4I7dBQoq?utm_source=generator"
+                  width="100%"
+                  height="352"
+                  frameBorder="0"
+                  allowFullScreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                />
               </div>
 
-              {/* Featured Album using AlbumItem */}
+              {/* Even Better Christmas — full album */}
+              <div className="release-embed-wrapper">
+                <iframe
+                  data-testid="embed-iframe"
+                  style={{ borderRadius: '12px' }}
+                  src="https://open.spotify.com/embed/album/0FDPRyIXg50LXOdgH8g65b?utm_source=generator"
+                  width="100%"
+                  height="352"
+                  frameBorder="0"
+                  allowFullScreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Other releases */}
               <div className="featured-album">
                 {albums.map((album) => (
                   <AlbumItem
@@ -121,6 +140,22 @@ function App() {
                   />
                 ))}
               </div>
+            </div>
+          </section>
+
+          {/* Our Favorite Moments Collage */}
+          <section className="collage-section">
+            <h2>Our Favorite Moments</h2>
+            <div className="collage-grid">
+              <img src="images/Collage/Firefly_GeminiFlash_Close up of the 4 of them together, all smiling. Professional photo shoot wearing hip 169102.jpg" alt="Band moment" className="collage-item" loading="lazy" />
+              <img src="images/Collage/Firefly_GeminiFlash_Professional pop group portrait of all 7 of them in a unique setting and in different 181489.png" alt="Band portrait" className="collage-item" loading="lazy" />
+              <img src="images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 501103.png" alt="Band fun" className="collage-item" loading="lazy" />
+              <img src="images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 591272.png" alt="Band fun" className="collage-item" loading="lazy" />
+              <img src="images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 790781.png" alt="Band fun" className="collage-item" loading="lazy" />
+              <img src="images/Collage/Firefly_GeminiFlash_The 4 of them together, all smiling and goofing around. Professional photo shoot wear 263443.png" alt="Band fun" className="collage-item" loading="lazy" />
+              <img src="images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 816982.png" alt="Horseback riding adventure" className="collage-item" loading="lazy" />
+              <img src="images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 984380.jpg" alt="Horseback riding adventure" className="collage-item" loading="lazy" />
+              <img src="images/Collage/Firefly_GeminiFlash_They are on an adventure together. 985742.jpg" alt="Band adventure" className="collage-item" loading="lazy" />
             </div>
           </section>
 
