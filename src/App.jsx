@@ -163,7 +163,7 @@ function App() {
                 <iframe
                   data-testid="embed-iframe"
                   style={{ borderRadius: '12px' }}
-                  src="https://open.spotify.com/embed/track/3s3asweuLKqLHG4I7dBQoq?utm_source=generator"
+                  src="https://open.spotify.com/embed/album/17n7rXpMd7OqsIkfjQQDDR?utm_source=generator"
                   width="100%"
                   height="352"
                   frameBorder="0"
