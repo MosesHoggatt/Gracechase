@@ -94,9 +94,14 @@ function App() {
       const el = trackRef.current;
       if (el) {
         el.style.transition = 'none';
+        // flushSync re-assigns .center to a different DOM element, which would
+        // trigger the slide scale transition and cause a visible pop.
+        // Suppress all child slide transitions during the correction too.
         flushSync(() => { indexRef.current = corrected; setCollageIndex(corrected); });
-        void el.offsetWidth; // force reflow — new position committed before transition re-enabled
+        el.querySelectorAll('.tray-slide').forEach(s => { s.style.transition = 'none'; });
+        void el.offsetWidth; // force reflow — commits track + slide state before animations re-enable
         el.style.transition = '';
+        el.querySelectorAll('.tray-slide').forEach(s => { s.style.transition = ''; });
       }
     }
   };
