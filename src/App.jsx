@@ -189,6 +189,8 @@ function App() {
               <div className="tray-track" ref={trackRef} style={{ transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))` }}>
                 {tripleImages.map((img, i) => {
                   const isCenter = i === collageIndex;
+                  const dist = Math.abs(i - collageIndex);
+                  const loadStrategy = dist <= 2 ? 'eager' : 'lazy';
                   return (
                     <div
                       key={i}
@@ -196,7 +198,7 @@ function App() {
                       onClick={isCenter ? () => setLightboxOpen(true) : undefined}
                       title={isCenter ? 'Click to enlarge' : undefined}
                     >
-                      <img src={img.src} alt={img.alt} className="tray-img" loading="lazy" />
+                      <img src={img.src} alt={img.alt} className="tray-img" loading={loadStrategy} />
                     </div>
                   );
                 })}
