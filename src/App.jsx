@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import AlbumItem from './components/AlbumItem.jsx';
 import Blog from './components/Blog.jsx';
@@ -88,11 +89,13 @@ function App() {
       else if (ci >= 2 * N) corrected = ci - N;
       if (corrected !== ci) {
         if (trackRef.current) trackRef.current.style.transition = 'none';
-        indexRef.current = corrected;
-        setCollageIndex(corrected);
-        requestAnimationFrame(() => requestAnimationFrame(() => {
+        flushSync(() => {
+          indexRef.current = corrected;
+          setCollageIndex(corrected);
+        });
+        requestAnimationFrame(() => {
           if (trackRef.current) trackRef.current.style.transition = '';
-        }));
+        });
       }
     }, 480);
   };
