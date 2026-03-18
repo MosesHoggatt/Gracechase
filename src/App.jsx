@@ -55,15 +55,31 @@ function App() {
     { src: "images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 984380.jpg", alt: "Horseback riding" },
     { src: "images/Collage/Firefly_GeminiFlash_They are on an adventure together. 985742.jpg", alt: "Band adventure" },
   ];
-  const [collageIndex, setCollageIndex] = useState(0);
+  const N = collageImages.length;
+  const tripleImages = [...collageImages, ...collageImages, ...collageImages];
+  const [collageIndex, setCollageIndex] = useState(N); // start at middle copy
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [sliding, setSliding] = useState(false);
+  const [transitionOn, setTransitionOn] = useState(true);
 
-  const advanceCarousel = (dir) => {
+  const advanceCarousel = (dir, e) => {
+    if (e) e.currentTarget.blur();
     if (sliding) return;
     setSliding(true);
-    setCollageIndex(i => (i + dir + collageImages.length) % collageImages.length);
-    setTimeout(() => setSliding(false), 420);
+    setCollageIndex(i => i + dir);
+    setTimeout(() => {
+      // Silently jump back to middle copy so loop is seamless
+      setTransitionOn(false);
+      setCollageIndex(i => {
+        if (i < N) return i + N;
+        if (i >= 2 * N) return i - N;
+        return i;
+      });
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        setTransitionOn(true);
+        setSliding(false);
+      }));
+    }, 430);
   };
 
   return (
@@ -163,10 +179,11 @@ function App() {
           <section className="collage-section">
             <h2>Our Favorite Moments</h2>
             <div className="tray-root">
-              {/* translate: start at 20% so slide 0 is centered (100%-60%)/2 = 20%),
-                  then subtract 60% per index step */}
-              <div className="tray-track" style={{ transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))` }}>
-                {collageImages.map((img, i) => {
+              <div className="tray-track" style={{
+                transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))`,
+                transition: transitionOn ? 'transform 0.42s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'
+              }}>
+                {tripleImages.map((img, i) => {
                   const isCenter = i === collageIndex;
                   return (
                     <div
@@ -182,14 +199,14 @@ function App() {
               </div>
               <div className="tray-fade-left" />
               <div className="tray-fade-right" />
-              <button className="tray-btn tray-btn-left" onClick={() => advanceCarousel(-1)} aria-label="Previous photo">&#8249;</button>
-              <button className="tray-btn tray-btn-right" onClick={() => advanceCarousel(1)} aria-label="Next photo">&#8250;</button>
+              <button className="tray-btn tray-btn-left" onClick={(e) => advanceCarousel(-1, e)} aria-label="Previous photo">&#8249;</button>
+              <button className="tray-btn tray-btn-right" onClick={(e) => advanceCarousel(1, e)} aria-label="Next photo">&#8250;</button>
             </div>
             {lightboxOpen && (
               <div className="lightbox-overlay" onClick={() => setLightboxOpen(false)}>
                 <img
-                  src={collageImages[collageIndex].src}
-                  alt={collageImages[collageIndex].alt}
+                  src={tripleImages[collageIndex].src}
+                  alt={tripleImages[collageIndex].alt}
                   className="lightbox-img"
                   onClick={(e) => e.stopPropagation()}
                 />
