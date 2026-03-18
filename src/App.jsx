@@ -80,21 +80,21 @@ function App() {
     setCollageIndex(next);
   };
 
-  // After each animation, silently reposition only when approaching array edges.
-  // Element is at rest when transitionend fires, so transition:none is invisible.
+  // After each slide animation ends, silently snap back to center zone.
+  // Reading el.offsetWidth forces a synchronous reflow, committing the new
+  // transform to the browser before transition is re-enabled — so the jump
+  // is never painted and the user sees no backward movement.
   const handleTransitionEnd = () => {
     const ci = indexRef.current;
-    // Only reposition when in the outermost copy on either side
-    if (ci < N || ci >= (COPIES - 1) * N) {
-      const corrected = ((ci % N) + N) % N + START;
-      if (trackRef.current) trackRef.current.style.transition = 'none';
-      flushSync(() => {
-        indexRef.current = corrected;
-        setCollageIndex(corrected);
-      });
-      requestAnimationFrame(() => {
-        if (trackRef.current) trackRef.current.style.transition = '';
-      });
+    const corrected = ((ci % N) + N) % N + START;
+    if (corrected !== ci) {
+      const el = trackRef.current;
+      if (el) {
+        el.style.transition = 'none';
+        flushSync(() => { indexRef.current = corrected; setCollageIndex(corrected); });
+        void el.offsetWidth; // force reflow — new position committed before transition re-enabled
+        el.style.transition = '';
+      }
     }
   };
 
