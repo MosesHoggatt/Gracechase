@@ -71,6 +71,7 @@ function App() {
   const tiledImages = Array.from({ length: COPIES }, () => collageImages).flat();
   const START = Math.floor(COPIES / 2) * N; // center of 7 copies = 3*N
   const [collageIndex, setCollageIndex] = useState(START);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const trackRef = useRef(null);
   const indexRef = useRef(START);
 
@@ -212,7 +213,7 @@ function App() {
           <section className="collage-section">
             <h2>Our Favorite Moments</h2>
             <div className="tray-root">
-              <div className="tray-track" ref={trackRef} onTransitionEnd={handleTransitionEnd} style={{ transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))` }}>
+              <div className="tray-track" ref={trackRef} onTransitionEnd={handleTransitionEnd} style={{ transform: `translateX(calc(var(--side-w) - ${collageIndex} * var(--slide-w)))` }}>
                 {tiledImages.map((img, i) => {
                   const isCenter = i === collageIndex;
                   const dist = Math.abs(i - collageIndex);
@@ -223,6 +224,7 @@ function App() {
                     <div
                       key={i}
                       className={`tray-slide${isCenter ? ' center' : ''}`}
+                      onClick={isCenter ? () => setLightboxOpen(true) : undefined}
                     >
                       <img src={safeImg.src} alt={safeImg.alt} className="tray-img" loading={loadStrategy} />
                     </div>
@@ -234,6 +236,16 @@ function App() {
               <button className="tray-btn tray-btn-left" onClick={(e) => advanceCarousel(-1, e)} aria-label="Previous photo">&#8249;</button>
               <button className="tray-btn tray-btn-right" onClick={(e) => advanceCarousel(1, e)} aria-label="Next photo">&#8250;</button>
             </div>
+            {lightboxOpen && (
+              <div className="lightbox-overlay" onClick={() => setLightboxOpen(false)}>
+                <img
+                  src={tiledImages[Math.max(0, Math.min(tiledImages.length - 1, collageIndex))].src}
+                  alt={tiledImages[Math.max(0, Math.min(tiledImages.length - 1, collageIndex))].alt}
+                  className="lightbox-img"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            )}
           </section>
 
           {/* About Section */}

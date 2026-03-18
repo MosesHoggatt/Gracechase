@@ -505,15 +505,42 @@ li, p {
 .tray-btn-left  { left: 0.75rem; }
 .tray-btn-right { right: 0.75rem; }
 
+/* Lightbox — hidden on desktop, enabled on mobile via media query below */
+.lightbox-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 8, 2, 0.92);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.lightbox-img {
+  max-width: 96vw;
+  max-height: 92vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.7);
+  cursor: default;
+}
+
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   .embeds-grid {
     grid-template-columns: 1fr;
   }
   .tray-root {
-    width: 92%;
-    --slide-w: 78%;
-    --side-w: 11%;
+    width: 96%;
+    --slide-w: 80%;
+    --side-w: 10%;
+  }
+  .tray-slide.center .tray-img {
+    cursor: zoom-in;
+  }
+  .lightbox-overlay {
+    display: flex;
   }
   .navbar-links {
     flex-direction: column;
