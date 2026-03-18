@@ -64,8 +64,6 @@ function App() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const trackRef = useRef(null);
   const indexRef = useRef(START);
-  const correctionTimerRef = useRef(null);
-  const lastAdvanceRef = useRef(0);
 
   // Preload all collage images into browser cache on mount
   useEffect(() => {
@@ -79,25 +77,24 @@ function App() {
     if (e) e.currentTarget.blur();
     const next = indexRef.current + dir;
     indexRef.current = next;
-    lastAdvanceRef.current = Date.now();
     setCollageIndex(next);
-    if (correctionTimerRef.current) clearTimeout(correctionTimerRef.current);
-    correctionTimerRef.current = setTimeout(() => {
-      if (Date.now() - lastAdvanceRef.current < 420) return;
-      const ci = indexRef.current;
-      // Always bring back to the center zone [START-N .. START+N-1] = [2N .. 3N-1]
-      const corrected = ((ci % N) + N) % N + START;
-      if (corrected !== ci) {
-        if (trackRef.current) trackRef.current.style.transition = 'none';
-        flushSync(() => {
-          indexRef.current = corrected;
-          setCollageIndex(corrected);
-        });
-        requestAnimationFrame(() => {
-          if (trackRef.current) trackRef.current.style.transition = '';
-        });
-      }
-    }, 480);
+  };
+
+  // After animation completes, silently snap back to center zone — element is
+  // at rest so transition:none makes the jump completely invisible.
+  const handleTransitionEnd = () => {
+    const ci = indexRef.current;
+    const corrected = ((ci % N) + N) % N + START;
+    if (corrected !== ci) {
+      if (trackRef.current) trackRef.current.style.transition = 'none';
+      flushSync(() => {
+        indexRef.current = corrected;
+        setCollageIndex(corrected);
+      });
+      requestAnimationFrame(() => {
+        if (trackRef.current) trackRef.current.style.transition = '';
+      });
+    }
   };
 
   return (
@@ -197,7 +194,7 @@ function App() {
           <section className="collage-section">
             <h2>Our Favorite Moments</h2>
             <div className="tray-root">
-              <div className="tray-track" ref={trackRef} style={{ transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))` }}>
+              <div className="tray-track" ref={trackRef} onTransitionEnd={handleTransitionEnd} style={{ transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))` }}>
                 {tiledImages.map((img, i) => {
                   const isCenter = i === collageIndex;
                   const dist = Math.abs(i - collageIndex);
