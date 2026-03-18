@@ -64,6 +64,14 @@ function App() {
   const correctionTimerRef = useRef(null);
   const lastAdvanceRef = useRef(0);
 
+  // Preload all collage images into browser cache on mount
+  useEffect(() => {
+    collageImages.forEach(({ src }) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   const advanceCarousel = (dir, e) => {
     if (e) e.currentTarget.blur();
     const next = indexRef.current + dir;
