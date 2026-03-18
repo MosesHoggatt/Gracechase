@@ -84,7 +84,10 @@ function App() {
   // Reading el.offsetWidth forces a synchronous reflow, committing the new
   // transform to the browser before transition is re-enabled — so the jump
   // is never painted and the user sees no backward movement.
-  const handleTransitionEnd = () => {
+  // IMPORTANT: child elements (.tray-slide, .tray-img) also have transitions
+  // whose transitionend events bubble up here — ignore them.
+  const handleTransitionEnd = (e) => {
+    if (e.target !== trackRef.current) return;
     const ci = indexRef.current;
     const corrected = ((ci % N) + N) % N + START;
     if (corrected !== ci) {
