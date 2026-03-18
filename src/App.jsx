@@ -57,11 +57,13 @@ function App() {
     { src: "images/Collage/Firefly_GeminiFlash_They are on an adventure together. 985742.jpg", alt: "Band adventure" },
   ];
   const N = collageImages.length;
-  const tripleImages = [...collageImages, ...collageImages, ...collageImages];
-  const [collageIndex, setCollageIndex] = useState(N); // start at middle copy
+  const COPIES = 7;
+  const tiledImages = Array.from({ length: COPIES }, () => collageImages).flat();
+  const START = Math.floor(COPIES / 2) * N; // center of 7 copies = 3*N
+  const [collageIndex, setCollageIndex] = useState(START);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const trackRef = useRef(null);
-  const indexRef = useRef(N);
+  const indexRef = useRef(START);
   const correctionTimerRef = useRef(null);
   const lastAdvanceRef = useRef(0);
 
@@ -81,12 +83,10 @@ function App() {
     setCollageIndex(next);
     if (correctionTimerRef.current) clearTimeout(correctionTimerRef.current);
     correctionTimerRef.current = setTimeout(() => {
-      // Only correct if no new click happened in the last 430ms
       if (Date.now() - lastAdvanceRef.current < 420) return;
       const ci = indexRef.current;
-      let corrected = ci;
-      if (ci < N) corrected = ci + N;
-      else if (ci >= 2 * N) corrected = ci - N;
+      // Always bring back to the center zone [START-N .. START+N-1] = [2N .. 3N-1]
+      const corrected = ((ci % N) + N) % N + START;
       if (corrected !== ci) {
         if (trackRef.current) trackRef.current.style.transition = 'none';
         flushSync(() => {
@@ -198,10 +198,12 @@ function App() {
             <h2>Our Favorite Moments</h2>
             <div className="tray-root">
               <div className="tray-track" ref={trackRef} style={{ transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))` }}>
-                {tripleImages.map((img, i) => {
+                {tiledImages.map((img, i) => {
                   const isCenter = i === collageIndex;
                   const dist = Math.abs(i - collageIndex);
                   const loadStrategy = dist <= 2 ? 'eager' : 'lazy';
+                  // Clamp to prevent undefined access if index drifts out of bounds
+                  const safeImg = tiledImages[Math.max(0, Math.min(tiledImages.length - 1, i))];
                   return (
                     <div
                       key={i}
@@ -209,7 +211,7 @@ function App() {
                       onClick={isCenter ? () => setLightboxOpen(true) : undefined}
                       title={isCenter ? 'Click to enlarge' : undefined}
                     >
-                      <img src={img.src} alt={img.alt} className="tray-img" loading={loadStrategy} />
+                      <img src={safeImg.src} alt={safeImg.alt} className="tray-img" loading={loadStrategy} />
                     </div>
                   );
                 })}
@@ -222,8 +224,8 @@ function App() {
             {lightboxOpen && (
               <div className="lightbox-overlay" onClick={() => setLightboxOpen(false)}>
                 <img
-                  src={tripleImages[collageIndex].src}
-                  alt={tripleImages[collageIndex].alt}
+                  src={tiledImages[Math.max(0, Math.min(tiledImages.length - 1, collageIndex))].src}
+                  alt={tiledImages[Math.max(0, Math.min(tiledImages.length - 1, collageIndex))].alt}
                   className="lightbox-img"
                   onClick={(e) => e.stopPropagation()}
                 />
