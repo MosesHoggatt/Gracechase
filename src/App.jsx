@@ -80,12 +80,13 @@ function App() {
     setCollageIndex(next);
   };
 
-  // After animation completes, silently snap back to center zone — element is
-  // at rest so transition:none makes the jump completely invisible.
+  // After each animation, silently reposition only when approaching array edges.
+  // Element is at rest when transitionend fires, so transition:none is invisible.
   const handleTransitionEnd = () => {
     const ci = indexRef.current;
-    const corrected = ((ci % N) + N) % N + START;
-    if (corrected !== ci) {
+    // Only reposition when in the outermost copy on either side
+    if (ci < N || ci >= (COPIES - 1) * N) {
+      const corrected = ((ci % N) + N) % N + START;
       if (trackRef.current) trackRef.current.style.transition = 'none';
       flushSync(() => {
         indexRef.current = corrected;
