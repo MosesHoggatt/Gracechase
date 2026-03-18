@@ -413,6 +413,7 @@ li, p {
   display: flex;
   align-items: center;
   will-change: transform;
+  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Each slide sits in a fixed-width slot */

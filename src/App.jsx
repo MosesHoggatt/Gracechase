@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import AlbumItem from './components/AlbumItem.jsx';
 import Blog from './components/Blog.jsx';
@@ -59,27 +59,30 @@ function App() {
   const tripleImages = [...collageImages, ...collageImages, ...collageImages];
   const [collageIndex, setCollageIndex] = useState(N); // start at middle copy
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [sliding, setSliding] = useState(false);
-  const [transitionOn, setTransitionOn] = useState(true);
+  const trackRef = useRef(null);
+  const indexRef = useRef(N);
+  const correctionTimerRef = useRef(null);
 
   const advanceCarousel = (dir, e) => {
     if (e) e.currentTarget.blur();
-    if (sliding) return;
-    setSliding(true);
-    setCollageIndex(i => i + dir);
-    setTimeout(() => {
-      // Silently jump back to middle copy so loop is seamless
-      setTransitionOn(false);
-      setCollageIndex(i => {
-        if (i < N) return i + N;
-        if (i >= 2 * N) return i - N;
-        return i;
-      });
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        setTransitionOn(true);
-        setSliding(false);
-      }));
-    }, 430);
+    const next = indexRef.current + dir;
+    indexRef.current = next;
+    setCollageIndex(next);
+    if (correctionTimerRef.current) clearTimeout(correctionTimerRef.current);
+    correctionTimerRef.current = setTimeout(() => {
+      const ci = indexRef.current;
+      let corrected = ci;
+      if (ci < N) corrected = ci + N;
+      else if (ci >= 2 * N) corrected = ci - N;
+      if (corrected !== ci) {
+        if (trackRef.current) trackRef.current.style.transition = 'none';
+        indexRef.current = corrected;
+        setCollageIndex(corrected);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (trackRef.current) trackRef.current.style.transition = '';
+        }));
+      }
+    }, 460);
   };
 
   return (
@@ -179,10 +182,7 @@ function App() {
           <section className="collage-section">
             <h2>Our Favorite Moments</h2>
             <div className="tray-root">
-              <div className="tray-track" style={{
-                transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))`,
-                transition: transitionOn ? 'transform 0.42s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'
-              }}>
+              <div className="tray-track" ref={trackRef} style={{ transform: `translateX(calc(20% - ${collageIndex} * var(--slide-w)))` }}>
                 {tripleImages.map((img, i) => {
                   const isCenter = i === collageIndex;
                   return (
