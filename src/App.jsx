@@ -8,6 +8,8 @@ import Privacy from './components/Privacy.jsx';
 import Contact from './components/Contact.jsx';
 import NewsletterSignup from './components/NewsletterSignup.jsx';
 import Unsubscribe from './components/Unsubscribe.jsx';
+import EvenBetterChristmas from './components/EvenBetterChristmas.jsx';
+import LetMyHeartFindChristmas from './components/LetMyHeartFindChristmas.jsx';
 import './App.css';
 
 function App() {
@@ -24,6 +26,14 @@ function App() {
     }
   }, [location.pathname]);
   // Sample album data (replace with API data in a real MERN app)
+  const newAlbum = {
+    id: 'new',
+    spotifyLink: 'https://open.spotify.com/album/0FDPRyIXg50LXOdgH8g65b',
+    amazonMusicLink: 'https://music.amazon.com/albums/B0FWZ9VRCF',
+    appleMusicLink: 'https://music.apple.com/us/album/even-better-christmas/1847634777',
+    youtubeMusicLink: 'https://music.youtube.com/playlist?list=OLAK5uy_n_fdOT3WVxXeKfjr-h2arrYbk623z3VRU',
+  };
+
   const albums = [
     {
       id: 1,
@@ -288,6 +298,8 @@ function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/newsletter" element={<NewsletterSignup />} />
       <Route path="/unsubscribe" element={<Unsubscribe />} />
+      <Route path="/even-better-christmas" element={<EvenBetterChristmas />} />
+      <Route path="/let-my-heart-find-christmas" element={<LetMyHeartFindChristmas />} />
     </Routes>
   );
 }

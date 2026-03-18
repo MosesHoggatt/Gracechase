@@ -47,7 +47,7 @@ const Privacy = () => {
         <Link to="/" className="home-link">← Back to Home</Link>
         <header className="privacy-header">
           <h1>Privacy Policy</h1>
-          <p>Last updated: October 19, 2025</p>
+          <p>Last updated: November 9, 2025</p>
         </header>
         <section className="privacy-content">
           <div className="privacy-section">
@@ -61,10 +61,10 @@ const Privacy = () => {
             <h2>What We Collect</h2>
             <ul>
               <li>
-                Site analytics: We use Google Analytics 4 (GA4) to measure visits, pages, and general usage. GA4 collects device/browser information, approximate location (based on IP), and event data like page views and clicks. We configured GA to avoid storing unnecessary identifiers for this site.
+                Site analytics: We use Google Analytics 4 (GA4) to measure visits, pages, and general usage. GA4 collects device/browser information, approximate location (based on IP), and event data like page views, clicks, button interactions, and navigation paths. We track which links and buttons you click to understand how you use the site and which content is most engaging. GA4 is configured to minimize unnecessary identifiers for this site.
               </li>
               <li>
-                Advertising and conversion signals: We use the Twitter/X pixel to measure ad performance and conversions (e.g., newsletter signups). This may allow Twitter to link visits to logged-in Twitter users for ad personalization according to their settings.
+                Advertising and conversion signals: We use the Twitter/X pixel and Meta (Facebook) pixel to measure ad performance and conversions (e.g., newsletter signups). These may allow Twitter and Meta to link visits to logged-in users for ad personalization according to their settings.
               </li>
               <li>
                 Newsletter data: If you subscribe, we store your email and interests (categories you pick) securely in our database. We use this only for managing your subscription.
@@ -79,7 +79,8 @@ const Privacy = () => {
             <h2>How We Use Data</h2>
             <ul>
               <li>Operate and improve the site and content.</li>
-              <li>Measure reach and effectiveness of pages, links, and campaigns.</li>
+              <li>Measure reach and effectiveness of pages, links, campaigns, and individual buttons/features.</li>
+              <li>Understand user behavior and preferences to improve user experience.</li>
               <li>Send newsletters or updates you requested.</li>
               <li>Detect and prevent abuse or errors.</li>
             </ul>
@@ -88,7 +89,7 @@ const Privacy = () => {
           <div className="privacy-section">
             <h2>Cookies and Similar Technologies</h2>
             <p>
-              GA4 and the Twitter/X pixel use cookies or similar storage to work. We show a consent banner for non-essential cookies (analytics and ads). You can block or delete cookies in your browser. We do not store your email in cookies or localStorage. We minimize cookies and only use them for analytics/ads and your GA opt-out preference.
+              GA4, Twitter/X pixel, and Meta (Facebook) pixel use cookies or similar storage to work. We show a consent banner for non-essential cookies (analytics and ads). You can block or delete cookies in your browser. We do not store your email in cookies or localStorage. We minimize cookies and only use them for analytics/ads and your GA opt-out preference.
             </p>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               {gaOptedOut ? (
@@ -116,6 +117,14 @@ const Privacy = () => {
               >
                 Twitter/X ad settings
               </a>
+              <a
+                href="https://www.facebook.com/privacy/policy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ padding: '0.5rem 1rem', border: '1px solid #D4AF37', borderRadius: 4, color: '#D4AF37', textDecoration: 'none' }}
+              >
+                Meta privacy policy
+              </a>
             </div>
           </div>
 
@@ -123,6 +132,9 @@ const Privacy = () => {
             <h2>Newsletter and Unsubscribe</h2>
             <p>
               When you subscribe, we store your email and interests securely in our database. If you unsubscribe, we delete your record(s) associated with that email within 24 hours and send a confirmation email. You can unsubscribe anytime on the <Link to="/unsubscribe">Unsubscribe</Link> page. We do not sell your email.
+            </p>
+            <p>
+              <strong>Questions about how we use your newsletter data?</strong> You can contact us at any time via our <Link to="/contact">contact form</Link> or email contact.gracechase@gmail.com and we will respond to your inquiry.
             </p>
           </div>
 
@@ -134,6 +146,7 @@ const Privacy = () => {
             <ul>
               <li>Google Analytics (Google LLC) for usage analytics.</li>
               <li>Twitter/X for conversion tracking and ad attribution.</li>
+              <li>Meta (Facebook) for conversion tracking and ad attribution.</li>
               <li>AWS (Amazon Web Services, Inc.) to host and store newsletter data and site services.</li>
             </ul>
             <p>

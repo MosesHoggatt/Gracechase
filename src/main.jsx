@@ -5,6 +5,7 @@ import { Amplify } from 'aws-amplify'
 import amplify_outputs from '../amplify_outputs/amplify_outputs.json'
 import './index.css'
 import App from './App.jsx'
+import { initOutboundLinkTracking } from './utils/analytics.js'
 
 // Force explicit regions for Auth and GraphQL to avoid environment region drift
 const config = {
@@ -31,6 +32,9 @@ const config = {
 }
 
 Amplify.configure(config)
+
+// Initialize outbound link tracking for GA4
+initOutboundLinkTracking()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
