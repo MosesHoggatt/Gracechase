@@ -62,14 +62,18 @@ function App() {
   const trackRef = useRef(null);
   const indexRef = useRef(N);
   const correctionTimerRef = useRef(null);
+  const lastAdvanceRef = useRef(0);
 
   const advanceCarousel = (dir, e) => {
     if (e) e.currentTarget.blur();
     const next = indexRef.current + dir;
     indexRef.current = next;
+    lastAdvanceRef.current = Date.now();
     setCollageIndex(next);
     if (correctionTimerRef.current) clearTimeout(correctionTimerRef.current);
     correctionTimerRef.current = setTimeout(() => {
+      // Only correct if no new click happened in the last 430ms
+      if (Date.now() - lastAdvanceRef.current < 420) return;
       const ci = indexRef.current;
       let corrected = ci;
       if (ci < N) corrected = ci + N;
@@ -82,7 +86,7 @@ function App() {
           if (trackRef.current) trackRef.current.style.transition = '';
         }));
       }
-    }, 460);
+    }, 480);
   };
 
   return (
