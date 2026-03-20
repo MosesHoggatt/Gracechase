@@ -107,7 +107,6 @@ function App() {
 
   const handleTouchStart = (e) => {
     touchStartXRef.current = e.touches[0].clientX;
-    lastInteractionRef.current = Date.now();
   };
 
   const handleTouchEnd = (e) => {
