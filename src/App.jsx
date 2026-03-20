@@ -76,6 +76,8 @@ function App() {
   const indexRef = useRef(START);
   const lastInteractionRef = useRef(0);
   const touchStartXRef = useRef(null);
+  const lightboxOpenRef = useRef(false);
+  const lightboxTouchStartXRef = useRef(null);
 
   // Preload all collage images into browser cache on mount
   useEffect(() => {
@@ -96,7 +98,7 @@ function App() {
   // Auto-scroll every 4.5s, pauses for 5s after any user interaction
   useEffect(() => {
     const timer = setInterval(() => {
-      if (Date.now() - lastInteractionRef.current > 5000) {
+      if (!lightboxOpenRef.current && Date.now() - lastInteractionRef.current > 5000) {
         const next = indexRef.current + 1;
         indexRef.current = next;
         setCollageIndex(next);
@@ -116,6 +118,22 @@ function App() {
       advanceCarousel(diff > 0 ? 1 : -1);
     }
     touchStartXRef.current = null;
+  };
+
+  const handleLightboxTouchStart = (e) => {
+    lightboxTouchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleLightboxTouchEnd = (e) => {
+    if (lightboxTouchStartXRef.current === null) return;
+    const diff = lightboxTouchStartXRef.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 30) {
+      const dir = diff > 0 ? 1 : -1;
+      const next = indexRef.current + dir;
+      indexRef.current = next;
+      setCollageIndex(next);
+    }
+    lightboxTouchStartXRef.current = null;
   };
 
   // After each slide animation ends, silently snap back to center zone.
@@ -197,7 +215,7 @@ function App() {
           <section className="releases-section" id="releases">
             <h2>Releases</h2>
             <div className="embeds-grid">
-              <div className="embed-cell">
+              <div className="embed-cell embed-smf">
                 <iframe
                   data-testid="embed-iframe"
                   style={{ borderRadius: '12px' }}
@@ -224,7 +242,7 @@ function App() {
                   </a>
                 </div>
               </div>
-              <div className="embed-cell">
+              <div className="embed-cell embed-ebc">
                 <iframe
                   data-testid="embed-iframe"
                   style={{ borderRadius: '12px' }}
@@ -280,7 +298,7 @@ function App() {
                     <div
                       key={i}
                       className={`tray-slide${isCenter ? ' center' : ''}`}
-                      onClick={isCenter ? () => setLightboxOpen(true) : undefined}
+                      onClick={isCenter ? () => { lightboxOpenRef.current = true; setLightboxOpen(true); } : undefined}
                     >
                       <img src={safeImg.src} alt={safeImg.alt} className="tray-img" loading={loadStrategy} />
                     </div>
@@ -293,7 +311,8 @@ function App() {
               <button className="tray-btn tray-btn-right" onClick={(e) => advanceCarousel(1, e)} aria-label="Next photo">&#8250;</button>
             </div>
             {lightboxOpen && (
-              <div className="lightbox-overlay" onClick={() => setLightboxOpen(false)}>
+              <div className="lightbox-overlay" onClick={() => setLightboxOpen(false)} onTouchStart={handleLightboxTouchStart} onTouchEnd={handleLightboxTouchEnd}>
+                <button className="lightbox-close" onClick={(e) => { e.stopPropagation(); setLightboxOpen(false); }} aria-label="Close">✕</button>
                 <img
                   src={tiledImages[Math.max(0, Math.min(tiledImages.length - 1, collageIndex))].src}
                   alt={tiledImages[Math.max(0, Math.min(tiledImages.length - 1, collageIndex))].alt}
