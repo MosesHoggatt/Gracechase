@@ -244,6 +244,9 @@ function App() {
                   <a href="https://music.youtube.com/playlist?list=OLAK5uy_n_fdOT3WVxXeKfjr-h2arrYbk623z3VRU" target="_blank" rel="noopener noreferrer" aria-label="Listen on YouTube Music">
                     <img src="images/link-icons/YT_music_logo.png" alt="YouTube Music" />
                   </a>
+                  <a href="https://music.apple.com/us/album/even-better-christmas/1847634777" target="_blank" rel="noopener noreferrer" aria-label="Listen on Apple Music">
+                    <img src="images/link-icons/Alt Streaming Service Icons/music.cce3eb3f.svg" alt="Apple Music" />
+                  </a>
                   <a href="https://music.amazon.com/albums/B0FWZ9VRCF" target="_blank" rel="noopener noreferrer" aria-label="Listen on Amazon Music">
                     <img src="images/link-icons/amazon_music_logo.png" alt="Amazon Music" />
                   </a>
