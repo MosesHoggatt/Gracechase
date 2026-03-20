@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import AlbumItem from './components/AlbumItem.jsx';
 import Blog from './components/Blog.jsx';
@@ -39,6 +40,7 @@ function App() {
       spotifyEmbedIframe: '<iframe data-testid="embed-iframe" className="spotify-embed" style={{borderRadius: "12px"}} src={`https://open.spotify.com/embed/album/${albumId}?utm_source=generator`} width="100%" height="352" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
       spotifyLink: 'https://open.spotify.com/album/0eRcQ32hkwgvSvfPPPOOhu',
       amazonMusicLink: 'https://music.amazon.com/albums/B0FRYSGZ4C',
+      youtubeLink: 'https://www.youtube.com/watch?v=EDaC7_Ek8eM&list=OLAK5uy_lUIwPFRjiX3R6qIWC3VFwBNw4LLNCupHc',
       appleMusicLink: 'https://music.apple.com/us/album/your-majesty/1841459632',
       youtubeMusicLink: 'https://music.youtube.com/playlist?list=OLAK5uy_kVbhrim-szUB-OAs0nCayOWOijpXukKCA',
     },
@@ -47,10 +49,100 @@ function App() {
       spotifyEmbedIframe: '<iframe data-testid="embed-iframe" className="spotify-embed" style={{borderRadius: "12px"}} src={`https://open.spotify.com/embed/album/5Tt1sGIoAnpzRHY3abDqz4?utm_source=generator`} width="100%" height="352" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
       spotifyLink: 'https://open.spotify.com/album/5Tt1sGIoAnpzRHY3abDqz4',
       amazonMusicLink: 'https://music.amazon.com/albums/B0FNLZ7CJ4',
+      youtubeLink: 'https://youtu.be/QoaeKUHDJM8',
       appleMusicLink: 'https://music.apple.com/us/album/im-still-your-love-single/1835662171',
       youtubeMusicLink: 'https://music.youtube.com/watch?v=QoaeKUHDJM8',
     },
   ];
+
+  const collageImages = [
+    { src: "images/Collage/Firefly_GeminiFlash_Close up of the 4 of them together, all smiling. Professional photo shoot wearing hip 169102.jpg", alt: "Band moment" },
+    { src: "images/Collage/Firefly_GeminiFlash_Professional pop group portrait of all 7 of them in a unique setting and in different 181489.png", alt: "Band portrait" },
+    { src: "images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 501103.png", alt: "Band fun" },
+    { src: "images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 591272.png", alt: "Band fun" },
+    { src: "images/Collage/Firefly_GeminiFlash_The 3 of them together, all smiling and goofing around. Professional photo shoot wear 790781.png", alt: "Band fun" },
+    { src: "images/Collage/Firefly_GeminiFlash_The 4 of them together, all smiling and goofing around. Professional photo shoot wear 263443.png", alt: "Band fun" },
+    { src: "images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 816982.png", alt: "Horseback riding" },
+    { src: "images/Collage/Firefly_GeminiFlash_They are all having fun horseback riding in the Colorado mountains.. 984380.jpg", alt: "Horseback riding" },
+    { src: "images/Collage/Firefly_GeminiFlash_They are on an adventure together. 985742.jpg", alt: "Band adventure" },
+  ];
+  const N = collageImages.length;
+  const COPIES = 7;
+  const tiledImages = Array.from({ length: COPIES }, () => collageImages).flat();
+  const START = Math.floor(COPIES / 2) * N; // center of 7 copies = 3*N
+  const [collageIndex, setCollageIndex] = useState(START);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const trackRef = useRef(null);
+  const indexRef = useRef(START);
+  const lastInteractionRef = useRef(0);
+  const touchStartXRef = useRef(null);
+
+  // Preload all collage images into browser cache on mount
+  useEffect(() => {
+    collageImages.forEach(({ src }) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  const advanceCarousel = (dir, e) => {
+    if (e) e.currentTarget.blur();
+    lastInteractionRef.current = Date.now();
+    const next = indexRef.current + dir;
+    indexRef.current = next;
+    setCollageIndex(next);
+  };
+
+  // Auto-scroll every 4.5s, pauses for 5s after any user interaction
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (Date.now() - lastInteractionRef.current > 5000) {
+        const next = indexRef.current + 1;
+        indexRef.current = next;
+        setCollageIndex(next);
+      }
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null) return;
+    const diff = touchStartXRef.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 30) {
+      advanceCarousel(diff > 0 ? 1 : -1);
+    }
+    touchStartXRef.current = null;
+  };
+
+  // After each slide animation ends, silently snap back to center zone.
+  // Reading el.offsetWidth forces a synchronous reflow, committing the new
+  // transform to the browser before transition is re-enabled — so the jump
+  // is never painted and the user sees no backward movement.
+  // IMPORTANT: child elements (.tray-slide, .tray-img) also have transitions
+  // whose transitionend events bubble up here — ignore them.
+  const handleTransitionEnd = (e) => {
+    if (e.target !== trackRef.current) return;
+    const ci = indexRef.current;
+    const corrected = ((ci % N) + N) % N + START;
+    if (corrected !== ci) {
+      const el = trackRef.current;
+      if (el) {
+        el.style.transition = 'none';
+        // flushSync re-assigns .center to a different DOM element, which would
+        // trigger the slide scale transition and cause a visible pop.
+        // Suppress all child slide transitions during the correction too.
+        flushSync(() => { indexRef.current = corrected; setCollageIndex(corrected); });
+        el.querySelectorAll('.tray-slide').forEach(s => { s.style.transition = 'none'; });
+        void el.offsetWidth; // force reflow — commits track + slide state before animations re-enable
+        el.style.transition = '';
+        el.querySelectorAll('.tray-slide').forEach(s => { s.style.transition = ''; });
+      }
+    }
+  };
 
   return (
     <Routes>
@@ -59,13 +151,6 @@ function App() {
           {/* Navbar */}
           <div className="header">
             <nav className="navbar">
-              <p><Link to="/" className="nav-link" onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
-              }}>Home</Link></p>
               <p><Link to="/" className="nav-link" onClick={(e) => {
                 e.preventDefault();
                 const element = document.getElementById('about');
@@ -94,13 +179,7 @@ function App() {
                   });
                 }
               }}>Releases</Link></p>
-              <p><Link to="/newsletter" className="nav-link" onClick={() => window.gtag && window.gtag('event', 'navigation_click', {
-                destination: '/newsletter',
-                page_path: window.location.pathname,
-                page_title: document.title,
-                element_position: 'nav_newsletter',
-                content_type: 'navigation'
-              })}>Stay in touch</Link></p>
+              <p><Link to="/newsletter" className="nav-link">Stay in touch</Link></p>
               {/* <p><Link to="/blog" className="nav-link">Blog</Link></p> */}
             </nav>
           </div>
@@ -109,48 +188,120 @@ function App() {
           <header className="hero-section">
             <img
               className="hero-image"
-              src="images/site-banners/YMBG.jpg"
-              alt="The Gracechase band in an epic silhouette with a golden lit background"
+              src="images/site-banners/GC Studio Banner YT.jpg"
+              alt="Gracechase studio banner"
             />
           </header>
 
           {/* Releases Section */}
           <section className="releases-section" id="releases">
             <h2>Releases</h2>
-            <div className="releases-grid">
-              {/* New album positioned above the other albums */}
-              <div className="new-album-container">
-                <AlbumItem
-                  key={newAlbum.id}
-                  spotifyLink={newAlbum.spotifyLink}
-                  youtubeMusicLink={newAlbum.youtubeMusicLink}
-                  appleMusicLink={newAlbum.appleMusicLink}
-                  amazonMusicLink={newAlbum.amazonMusicLink}
+            <div className="embeds-grid">
+              <div className="embed-cell">
+                <iframe
+                  data-testid="embed-iframe"
+                  style={{ borderRadius: '12px' }}
+                  src="https://open.spotify.com/embed/album/17n7rXpMd7OqsIkfjQQDDR?utm_source=generator"
+                  width="100%"
+                  height="352"
+                  frameBorder="0"
+                  allowFullScreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
                 />
-                <div className="album-page-link">
-                  <Link to="/even-better-christmas" onClick={() => window.gtag && window.gtag('event', 'page_view_click', {
-                    destination: '/even-better-christmas',
-                    page_path: '/',
-                    page_title: 'Gracechase - Home',
-                    element_position: 'new_album_cta',
-                    content_type: 'navigation'
-                  })}>View Album Page →</Link>
+                <div className="streaming-links">
+                  <a href="https://open.spotify.com/album/17n7rXpMd7OqsIkfjQQDDR" target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify">
+                    <img src="images/link-icons/Alt Streaming Service Icons/Spotify_Primary_Logo_RGB_Green.png?v=2" alt="Spotify" />
+                  </a>
+                  <a href="https://music.youtube.com/playlist?list=OLAK5uy_kO4ztJC1BtAXZTzuvXEh44m22aGglsgKo" target="_blank" rel="noopener noreferrer" aria-label="Listen on YouTube Music">
+                    <img src="images/link-icons/YT_music_logo.png" alt="YouTube Music" />
+                  </a>
+                  <a href="https://music.apple.com/us/album/set-me-free/1878887745" target="_blank" rel="noopener noreferrer" aria-label="Listen on Apple Music">
+                    <img src="images/link-icons/Alt Streaming Service Icons/music.cce3eb3f.svg" alt="Apple Music" />
+                  </a>
+                  <a href="https://music.amazon.com/albums/B0GNPDJP9H" target="_blank" rel="noopener noreferrer" aria-label="Listen on Amazon Music">
+                    <img src="images/link-icons/amazon_music_logo.png" alt="Amazon Music" />
+                  </a>
                 </div>
               </div>
-
-              {/* Featured Album using AlbumItem */}
-              <div className="featured-album">
-                {albums.map((album) => (
+              <div className="embed-cell">
+                <iframe
+                  data-testid="embed-iframe"
+                  style={{ borderRadius: '12px' }}
+                  src="https://open.spotify.com/embed/album/0FDPRyIXg50LXOdgH8g65b?utm_source=generator"
+                  width="100%"
+                  height="352"
+                  frameBorder="0"
+                  allowFullScreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                />
+                <div className="streaming-links">
+                  <a href="https://open.spotify.com/album/0FDPRyIXg50LXOdgH8g65b" target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify">
+                    <img src="images/link-icons/Alt Streaming Service Icons/Spotify_Primary_Logo_RGB_Green.png?v=2" alt="Spotify" />
+                  </a>
+                  <a href="https://music.youtube.com/playlist?list=OLAK5uy_n_fdOT3WVxXeKfjr-h2arrYbk623z3VRU" target="_blank" rel="noopener noreferrer" aria-label="Listen on YouTube Music">
+                    <img src="images/link-icons/YT_music_logo.png" alt="YouTube Music" />
+                  </a>
+                  <a href="https://music.apple.com/us/album/even-better-christmas/1847634777" target="_blank" rel="noopener noreferrer" aria-label="Listen on Apple Music">
+                    <img src="images/link-icons/Alt Streaming Service Icons/music.cce3eb3f.svg" alt="Apple Music" />
+                  </a>
+                  <a href="https://music.amazon.com/albums/B0FWZ9VRCF" target="_blank" rel="noopener noreferrer" aria-label="Listen on Amazon Music">
+                    <img src="images/link-icons/amazon_music_logo.png" alt="Amazon Music" />
+                  </a>
+                </div>
+              </div>
+              {albums.map((album) => (
+                <div className="embed-cell" key={album.id}>
                   <AlbumItem
-                    key={album.id}
                     spotifyLink={album.spotifyLink}
                     youtubeMusicLink={album.youtubeMusicLink}
+                    youtubeLink={album.youtubeLink}
                     appleMusicLink={album.appleMusicLink}
                     amazonMusicLink={album.amazonMusicLink}
                   />
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
+          </section>
+
+          {/* Our Favorite Moments Carousel */}
+          <section className="collage-section">
+            <h2>Our Favorite Moments</h2>
+            <div className="tray-root" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+              <div className="tray-track" ref={trackRef} onTransitionEnd={handleTransitionEnd} style={{ transform: `translateX(calc(var(--side-w) - ${collageIndex} * var(--slide-w)))` }}>
+                {tiledImages.map((img, i) => {
+                  const isCenter = i === collageIndex;
+                  const dist = Math.abs(i - collageIndex);
+                  const loadStrategy = dist <= 2 ? 'eager' : 'lazy';
+                  // Clamp to prevent undefined access if index drifts out of bounds
+                  const safeImg = tiledImages[Math.max(0, Math.min(tiledImages.length - 1, i))];
+                  return (
+                    <div
+                      key={i}
+                      className={`tray-slide${isCenter ? ' center' : ''}`}
+                      onClick={isCenter ? () => setLightboxOpen(true) : undefined}
+                    >
+                      <img src={safeImg.src} alt={safeImg.alt} className="tray-img" loading={loadStrategy} />
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="tray-fade-left" />
+              <div className="tray-fade-right" />
+              <button className="tray-btn tray-btn-left" onClick={(e) => advanceCarousel(-1, e)} aria-label="Previous photo">&#8249;</button>
+              <button className="tray-btn tray-btn-right" onClick={(e) => advanceCarousel(1, e)} aria-label="Next photo">&#8250;</button>
+            </div>
+            {lightboxOpen && (
+              <div className="lightbox-overlay" onClick={() => setLightboxOpen(false)}>
+                <img
+                  src={tiledImages[Math.max(0, Math.min(tiledImages.length - 1, collageIndex))].src}
+                  alt={tiledImages[Math.max(0, Math.min(tiledImages.length - 1, collageIndex))].alt}
+                  className="lightbox-img"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            )}
           </section>
 
           {/* About Section */}

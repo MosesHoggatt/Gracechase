@@ -12,12 +12,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px; /* Increased for more breathing space */
-  border: 1px solid #e0e0e0;
+  padding: 16px;
+  border: 1px solid rgb(210, 192, 172);
   border-radius: 12px;
-  width: 100%; /* Fill parent container */
-  box-sizing: border-box; /* Include padding/border in width */
-  /* transition: transform 0.2s; */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .album-cover {
@@ -44,8 +43,8 @@ p {
 
 .streaming-links svg {
   transition: opacity 0.2s;
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
 }
 
 .streaming-links svg:hover {
@@ -54,8 +53,8 @@ p {
 
 /* Additional styles */
 .streaming-links img {
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   transition: opacity 0.2s;
   border-radius: 50%;
