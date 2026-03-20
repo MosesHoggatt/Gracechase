@@ -181,6 +181,20 @@ function App() {
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   loading="lazy"
                 />
+                <div className="streaming-links">
+                  <a href="https://open.spotify.com/album/17n7rXpMd7OqsIkfjQQDDR" target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify">
+                    <img src="images/link-icons/Alt Streaming Service Icons/Spotify_Primary_Logo_RGB_Green.png?v=2" alt="Spotify" />
+                  </a>
+                  <a href="https://music.youtube.com/playlist?list=OLAK5uy_kO4ztJC1BtAXZTzuvXEh44m22aGglsgKo" target="_blank" rel="noopener noreferrer" aria-label="Listen on YouTube Music">
+                    <img src="images/link-icons/YT_music_logo.png" alt="YouTube Music" />
+                  </a>
+                  <a href="https://music.apple.com/us/album/set-me-free/1878887745" target="_blank" rel="noopener noreferrer" aria-label="Listen on Apple Music">
+                    <img src="images/link-icons/Alt Streaming Service Icons/music.cce3eb3f.svg" alt="Apple Music" />
+                  </a>
+                  <a href="https://music.amazon.com/albums/B0GNPDJP9H" target="_blank" rel="noopener noreferrer" aria-label="Listen on Amazon Music">
+                    <img src="images/link-icons/amazon_music_logo.png" alt="Amazon Music" />
+                  </a>
+                </div>
               </div>
               <div className="embed-cell">
                 <iframe
@@ -194,6 +208,17 @@ function App() {
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   loading="lazy"
                 />
+                <div className="streaming-links">
+                  <a href="https://open.spotify.com/album/0FDPRyIXg50LXOdgH8g65b" target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify">
+                    <img src="images/link-icons/Alt Streaming Service Icons/Spotify_Primary_Logo_RGB_Green.png?v=2" alt="Spotify" />
+                  </a>
+                  <a href="https://music.youtube.com/playlist?list=OLAK5uy_n_fdOT3WVxXeKfjr-h2arrYbk623z3VRU" target="_blank" rel="noopener noreferrer" aria-label="Listen on YouTube Music">
+                    <img src="images/link-icons/YT_music_logo.png" alt="YouTube Music" />
+                  </a>
+                  <a href="https://music.amazon.com/albums/B0FWZ9VRCF" target="_blank" rel="noopener noreferrer" aria-label="Listen on Amazon Music">
+                    <img src="images/link-icons/amazon_music_logo.png" alt="Amazon Music" />
+                  </a>
+                </div>
               </div>
               {albums.map((album) => (
                 <div className="embed-cell" key={album.id}>
