@@ -74,6 +74,8 @@ function App() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const trackRef = useRef(null);
   const indexRef = useRef(START);
+  const lastInteractionRef = useRef(0);
+  const touchStartXRef = useRef(null);
 
   // Preload all collage images into browser cache on mount
   useEffect(() => {
@@ -85,9 +87,36 @@ function App() {
 
   const advanceCarousel = (dir, e) => {
     if (e) e.currentTarget.blur();
+    lastInteractionRef.current = Date.now();
     const next = indexRef.current + dir;
     indexRef.current = next;
     setCollageIndex(next);
+  };
+
+  // Auto-scroll every 4.5s, pauses for 5s after any user interaction
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (Date.now() - lastInteractionRef.current > 5000) {
+        const next = indexRef.current + 1;
+        indexRef.current = next;
+        setCollageIndex(next);
+      }
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    lastInteractionRef.current = Date.now();
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null) return;
+    const diff = touchStartXRef.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 30) {
+      advanceCarousel(diff > 0 ? 1 : -1);
+    }
+    touchStartXRef.current = null;
   };
 
   // After each slide animation ends, silently snap back to center zone.
@@ -237,7 +266,7 @@ function App() {
           {/* Our Favorite Moments Carousel */}
           <section className="collage-section">
             <h2>Our Favorite Moments</h2>
-            <div className="tray-root">
+            <div className="tray-root" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
               <div className="tray-track" ref={trackRef} onTransitionEnd={handleTransitionEnd} style={{ transform: `translateX(calc(var(--side-w) - ${collageIndex} * var(--slide-w)))` }}>
                 {tiledImages.map((img, i) => {
                   const isCenter = i === collageIndex;

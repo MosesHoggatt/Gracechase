@@ -140,7 +140,7 @@ input[type="radio"] {
 .releases-section {
   display: flex;
   flex-direction: column;
-  padding: 3rem 2rem;
+  padding: 1.25rem 2rem 3rem;
   background-color: rgba(210, 192, 172, 0.22);
   border-radius: 0;
   margin-top: 0;
@@ -546,6 +546,9 @@ li, p {
   }
   .lightbox-overlay {
     display: flex;
+  }
+  .tray-btn {
+    display: none;
   }
   .navbar-links {
     flex-direction: column;
