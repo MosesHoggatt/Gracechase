@@ -270,7 +270,7 @@ function App() {
                 </div>
               </div>
               {albums.map((album) => (
-                <div className="embed-cell" key={album.id}>
+                <div className={`embed-cell ${album.id === 1 ? 'embed-ymj' : 'embed-isyl'}`} key={album.id}>
                   <AlbumItem
                     spotifyLink={album.spotifyLink}
                     youtubeMusicLink={album.youtubeMusicLink}
