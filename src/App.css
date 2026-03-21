@@ -449,7 +449,7 @@ li, p {
 
 .tray-slide.center .tray-img {
   box-shadow: 0 10px 40px rgba(116,81,49,0.30);
-  cursor: zoom-in;
+  cursor: default;
 }
 
 /* Edge fade overlays — pointer-events:none so clicks pass through */
@@ -531,6 +531,25 @@ li, p {
   cursor: default;
 }
 
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  color: rgba(210, 210, 210, 0.65);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10000;
+  padding: 0.4rem 0.6rem;
+  border-radius: 50%;
+  transition: color 0.2s;
+}
+
+.lightbox-close:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   .embeds-grid {
@@ -554,6 +573,10 @@ li, p {
     flex-direction: column;
     text-align: center;
   }
+  /* Spotify embed heights calculated to avoid internal scrolling */
+  /* 128px header + tracks × 57px ≈ exact content height        */
+  .embed-smf iframe { height: 860px; }  /* Set Me Free: 13 tracks        */
+  .embed-ebc iframe { height: 980px; }  /* Even Better Christmas: 15 tracks */
 }
 
 @media (max-width: 480px) {
