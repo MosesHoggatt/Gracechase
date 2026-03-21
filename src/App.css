@@ -560,12 +560,6 @@ li, p {
     --slide-w: 80%;
     --side-w: 10%;
   }
-  .tray-slide.center .tray-img {
-    cursor: zoom-in;
-  }
-  .lightbox-overlay {
-    display: flex;
-  }
   .tray-btn {
     display: none;
   }
@@ -575,8 +569,10 @@ li, p {
   }
   /* Spotify embed heights calculated to avoid internal scrolling */
   /* 128px header + tracks × 57px ≈ exact content height        */
-  .embed-smf iframe { height: 860px; }  /* Set Me Free: 13 tracks        */
-  .embed-ebc iframe { height: 980px; }  /* Even Better Christmas: 15 tracks */
+  .embed-smf iframe { height: 878px; }  /* Set Me Free: 13 tracks (+2%)     */
+  .embed-ebc iframe { height: 980px; }  /* Even Better Christmas: 15 tracks  */
+  .embed-ymj .spotify-embed { height: 926px; }  /* Your Majesty: 14 tracks   */
+  .embed-isyl .spotify-embed { height: 232px; } /* I'm Still Your Love: 1 track */
 }
 
 @media (max-width: 480px) {
