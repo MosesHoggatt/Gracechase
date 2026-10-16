@@ -2,7 +2,10 @@
 
 .lmhfc-page {
   min-height: 100vh;
-  background-color: rgb(241, 235, 229); /* Cream */
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(232, 180, 106, 0.14), transparent 70%),
+    var(--gc-ink, #15100c);
+  color: var(--gc-cream, #f6eddc);
   padding: 0;
   margin: 0;
 }
@@ -10,7 +13,7 @@
 .lmhfc-content-wrapper {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 1rem 1rem 3rem 1rem;
+  padding: 1.5rem 1rem 3rem 1rem;
 }
 
 /* 2. Hero Video Container */
@@ -43,7 +46,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
-  color: rgb(45, 44, 40);
+  color: var(--gc-cream, #f6eddc);
   margin: 0 0 18px 0;
   letter-spacing: 0.03em;
 }
@@ -185,8 +188,8 @@
 
 /* 4. Secondary Album Section */
 .lmhfc-album-section {
-  border-top: solid rgba(45, 44, 40, 0.2);
-  padding-top: 18px;
+  border-top: 1px solid rgba(246, 237, 220, 0.14);
+  padding-top: 2rem;
   text-align: center;
 }
 
@@ -194,7 +197,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
-  color: rgb(45, 44, 40);
+  color: var(--gc-cream, #f6eddc);
   margin: 0 0 18px 0;
   letter-spacing: 0.03em;
 }
@@ -223,10 +226,32 @@
   box-shadow: 0 6px 20px rgba(45, 44, 40, 0.3);
 }
 
+.lmhfc-album-content figcaption,
+.lmhfc-album-preview-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gc-amber, #e8b46a);
+  margin-bottom: -0.75rem;
+}
+
 .lmhfc-album-embed {
   width: 100%;
   max-width: 500px;
-  box-shadow: 0 6px 20px rgba(45, 44, 40, 0.3);
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.lmhfc-album-more {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.lmhfc-album-more a {
+  color: var(--gc-amber, #e8b46a);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .lmhfc-album-links {
@@ -264,38 +289,6 @@
 .lmhfc-album-links a:hover {
   transform: translateY(-2px) scale(1.08);
   filter: drop-shadow(0 4px 8px rgba(204, 175, 109, 0.5));
-}
-
-/* Footer */
-.lmhfc-footer {
-  padding: 1rem 0 0 0;
-  text-align: center;
-  background-color: transparent;
-  margin-top: 2rem;
-}
-
-.lmhfc-footer-content {
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.lmhfc-footer-content p {
-  font-size: 0.875rem;
-  color: rgb(45, 44, 40);
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  margin: 0;
-}
-
-.lmhfc-footer-content a {
-  color: rgb(45, 44, 40);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.lmhfc-footer-content a:hover {
-  color: rgb(204, 175, 109);
-  text-decoration: underline;
 }
 
 /* Responsive */

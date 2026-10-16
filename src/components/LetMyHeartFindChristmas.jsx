@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SiteNav from './SiteNav.jsx';
+import SiteFooter from './SiteFooter.jsx';
 import './LetMyHeartFindChristmas.css';
 
 const LetMyHeartFindChristmas = () => {
@@ -27,6 +29,7 @@ const LetMyHeartFindChristmas = () => {
 
   return (
     <div className="lmhfc-page">
+      <SiteNav />
       <div className="lmhfc-content-wrapper">
 
         {/* 2. Hero Video */}
@@ -152,19 +155,18 @@ const LetMyHeartFindChristmas = () => {
         <div className="lmhfc-album-section">
           <h2 className="lmhfc-album-heading">EXPLORE THE FULL ALBUM</h2>
           
-          <div className="lmhfc-album-content">
+          <figure className="lmhfc-album-content">
+            <figcaption className="lmhfc-album-preview-label">Preview on Spotify</figcaption>
             <iframe
               className="lmhfc-album-embed"
-              style={{borderRadius: '12px'}}
+              title="Spotify preview: Even Better Christmas"
               src={`https://open.spotify.com/embed/album/${albumData.spotifyAlbumId}?utm_source=generator`}
               width="100%"
-              height="975.333"
-              frameBorder="0"
-              allowFullScreen=""
+              height="152"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
             ></iframe>
-          </div>
+          </figure>
 
           <div className="lmhfc-album-links">
             {albumData.spotifyLink && (
@@ -250,22 +252,11 @@ const LetMyHeartFindChristmas = () => {
           </div>
         </div>
 
-        {/* Footer */}
-        <footer className="lmhfc-footer">
-          <div className="lmhfc-footer-content">
-            <p>&copy; 2025 Gracechase. All rights reserved. |
-              {' '}
-              <Link to="/privacy">Privacy Policy</Link>
-              {' '}|
-              {' '}
-              <Link to="/contact">Contact</Link>
-              {' '}|
-              {' '}
-              <Link to="/">Home</Link>
-            </p>
-          </div>
-        </footer>
+        <p className="lmhfc-album-more">
+          <Link to="/album/even-better-christmas">See the full Even Better Christmas track list</Link>
+        </p>
       </div>
+      <SiteFooter />
     </div>
   );
 };

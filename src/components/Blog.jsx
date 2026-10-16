@@ -7,7 +7,7 @@ const Blog = () => {
       id: 1,
       title: 'Our Journey with AI Music',
       date: 'October 8, 2025',
-      image: 'images/album-covers/YourMajesty_AlbumCover.png',
+      image: 'images/album-covers/your-majesty.jpg?v=3',
       excerpt: 'Discover how Gracechase blends AI creativity with human emotion to create unique music experiences.',
       content: 'Full content for the first post goes here. This is where the detailed article would be displayed.'
     },
