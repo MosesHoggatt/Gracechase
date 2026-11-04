@@ -8,6 +8,7 @@ export default function SiteFooter() {
       </p>
       <ul className="gc-footer__links">
         <li><Link to="/privacy">Privacy Policy</Link></li>
+        <li><a href="/terms">Terms of Service</a></li>
         <li><Link to="/contact">Contact</Link></li>
       </ul>
     </footer>
