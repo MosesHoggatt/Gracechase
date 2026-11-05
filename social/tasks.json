@@ -1,0 +1,2071 @@
+{
+  "version": 1,
+  "next_id": 53,
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Turn on Hyper-V on this PC",
+      "due": null,
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This turns on Hyper-V, the Windows feature that can run a second computer inside this one, so video work can happen off your screen. It does not restart the PC.\n\nOn this PC:\n\n1. Click Start.\n2. Type PowerShell.\n3. Right-click Windows PowerShell.\n4. Click Run as administrator.\n5. If a window says Do you want to allow this app to make changes to your device?, click Yes.\n6. Click in the blue window, paste the line below, and press Enter.\n\n```\npowershell -ExecutionPolicy Bypass -File \"C:\\Users\\ahogg\\Projects\\Gracechase\\tools\\vm\\setup-hyperv.ps1\"\n```\n\nThat line runs a setup file already saved on this PC. It turns Hyper-V on. It does not restart the computer.\n\nYou should see a line that says Hyper-V is already enabled. or Restart Windows before creating the VM. This script did not restart it.\n\nThen tap Complete.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T001",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Admin elevation: setup-hyperv.ps1 has to run in an elevated PowerShell, and agents cannot pass the UAC prompt.",
+      "priority": "medium",
+      "checked": "On November 4, 2026 a Windows log check (Win32_ComputerSystem) showed HypervisorPresent false, and Get-VM is not available. Hyper-V is not on. This still needs the elevated PowerShell step."
+    },
+    {
+      "id": "T002",
+      "title": "Turn on SVM in the Gigabyte startup menu",
+      "due": null,
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This turns on SVM, the switch in the computer's startup menu that Hyper-V needs before it can actually run. The Windows setup cannot flip that switch.\n\nOn this PC, while it is starting up:\n\n1. Restart the PC.\n2. When the Gigabyte logo is on the screen, press Delete.\n3. Open Tweaker, then Advanced CPU Settings. If SVM Mode is not there, open Settings, then AMD CBS. This motherboard is a B550 VISION D-P.\n4. Set SVM Mode to Enabled.\n5. Press F10. Click Yes when it asks you to save.\n6. Wait until the Windows desktop is back.\n7. Click Start, click your account picture, then click Sign out. Sign back in.\n\nYou should be at the Windows desktop, and you should have signed out and back in once.\n\nThen tap Complete.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T002",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "BIOS physical step: SVM has to be enabled in the Gigabyte firmware. Agents cannot press Delete at the logo.",
+      "priority": "medium",
+      "checked": "On November 4, 2026 a Windows log check (Win32_Processor) showed VirtualizationFirmwareEnabled false and SecondLevelAddressTranslationExtensions true. SVM is still off in the firmware. This still needs the physical startup-menu step."
+    },
+    {
+      "id": "T003",
+      "title": "Download a legal Windows 11 x64 ISO from...",
+      "due": null,
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Download a legal Windows 11 x64 ISO from https://www.microsoft.com/software-download/windows11 using Download Windows 11 Disk Image (ISO). Do not run the Installation Assistant. Save it under C:\\Gracechase\\iso, not on E:\\. Check Get-FileHash against the hash on that page. The VM setup uses Pro. An unactivated copy only nags.",
+      "links": [
+        "https://www.microsoft.com/software-download/windows11"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Downloading the Windows ISO does not need Adam. None is on disk yet. Save it off E:\\ and check the hash.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T003",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T004",
+      "title": "Create the hidden computer from the Windows installer",
+      "due": null,
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This creates a hidden computer named Gracechase-Worker and starts it in the background. No window opens. Do this only after Hyper-V is on and SVM Mode is Enabled.\n\nOn this PC. You need a Windows installer file first. That file's name ends in .iso.\n\n1. If you do not already have that file, open https://www.microsoft.com/software-download/windows11 in Chrome.\n2. On that page, click Download Windows 11 Disk Image (ISO). Do not click Download Now under Windows 11 Installation Assistant.\n3. Save the file on this PC. Do not save it on the E: drive. Remember the folder.\n4. Click Start, type PowerShell, right-click Windows PowerShell, and click Run as administrator.\n5. If a window says Do you want to allow this app to make changes to your device?, click Yes.\n6. Paste the line below. Change C:\\path\\to\\Windows.iso to the real folder and file name you saved. Press Enter.\n\n```\npowershell -ExecutionPolicy Bypass -File \"C:\\Users\\ahogg\\Projects\\Gracechase\\tools\\vm\\create-vm.ps1\" -IsoPath \"C:\\path\\to\\Windows.iso\"\n```\n\nThat line runs a setup file already on this PC. The quoted part that ends in .iso is the Windows installer file you saved.\n\nYou should see Started Gracechase-Worker in the background. No console window was opened.\n\nThen tap Complete.",
+      "links": [
+        "https://www.microsoft.com/software-download/windows11"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T004",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Admin elevation: create-vm.ps1 has to run in an elevated PowerShell after the reboot.",
+      "priority": "medium",
+      "checked": "On November 4, 2026 logs showed HypervisorPresent false and Get-VM unavailable, so the hidden computer Gracechase-Worker does not exist. The Windows 11 download link in the instructions was not a 404. Creating the computer is not done."
+    },
+    {
+      "id": "T005",
+      "title": "After T004 creates Gracechase-Worker, install Windows unattended from the ISO in...",
+      "due": null,
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "After T004 creates Gracechase-Worker, install Windows unattended from the ISO in C:\\Gracechase\\iso. Do not ask Adam to sit in VMConnect for setup. Pro, or the Enterprise evaluation if that ISO was chosen. Leave the VM running and signed in to a desktop.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Windows setup can be unattended once the VM and the ISO exist. Adam does not need to watch it in VMConnect.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T005",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T006",
+      "title": "Type this PC's password when the hidden computer asks",
+      "due": null,
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the moment the hidden computer asks for the password of this PC. You type it. It is not written into a file, and nobody else types it.\n\nOn the hidden computer, in the black setup window. This is not a website.\n\n1. When the window says Host Windows account (example: ahogg), type ahogg and press Enter.\n2. When Windows asks for the password, type the same password you use to sign in to this PC. Then press Enter or click OK.\n\nYou should see the window keep going. You should not see Could not sign in.\n\nThen tap Complete.\n\nIf that black window is not open yet, wait until the hidden computer exists.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T006",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Sign-in: guest-setup.ps1 asks for this PC's account password, and agents do not type it.",
+      "priority": "medium",
+      "checked": "On November 4, 2026 logs showed no Hyper-V virtual machine (HypervisorPresent false, Get-VM unavailable), so no setup window is asking for this PC password. The password step is not done."
+    },
+    {
+      "id": "T007",
+      "title": "Sign in on the hidden computer's Chrome",
+      "due": null,
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This signs you in once on the hidden computer so the video and music sites stay signed in there, and this PC's mouse can stay free.\n\nOn the hidden computer, in Google Chrome:\n\n1. Open https://firefly.adobe.com/ and sign in. Leave that tab signed in.\n2. Open https://lumalabs.ai/app and sign in. That page is Dream Machine. Leave that tab signed in.\n3. Open https://studio.youtube.com/ and sign in to the Gracechase channel. Leave that tab signed in.\n4. Open https://business.facebook.com/ and sign in. Leave that tab signed in.\n5. Open https://www.tiktok.com/ and sign in. Leave that tab signed in.\n6. Open https://distrokid.com/signin/ and sign in. Leave that tab signed in.\n7. Click the X in the corner of the window titled Virtual Machine Connection. Do not click Sign out. Do not shut the hidden computer down.\n\nYou should be able to open that window again and still see those sites signed in.\n\nThen tap Complete.",
+      "links": [
+        "https://firefly.adobe.com/",
+        "https://lumalabs.ai/app",
+        "https://studio.youtube.com/",
+        "https://business.facebook.com/",
+        "https://www.tiktok.com/",
+        "https://distrokid.com/signin/"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T007",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Sign-in: the VM Chrome needs one sign-in to Firefly, Dream Machine, YouTube Studio, Meta, TikTok, and DistroKid.",
+      "priority": "medium",
+      "checked": "On November 4, 2026 logs showed the hidden computer does not exist (HypervisorPresent false, Get-VM unavailable), so its Chrome is not signed in. The sign-in links in the instructions were reachable and not 404. Sign-in is not done."
+    },
+    {
+      "id": "T008",
+      "title": "Thursday Nov 5, 5:00pm Mountain: agents publish the All I Need Instagram Reel",
+      "due": null,
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Thursday Nov 5, 5:00pm Mountain: agents publish the All I Need Instagram Reel. Task Scheduler job `Gracechase-IG-Reel-All-I-Need` on this PC uploads the vertical file at 4:50pm Mountain and calls media_publish at 5:00pm Mountain, never earlier. Caption is the Instagram Reel block. The website field stays as it is. Not an owner task.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Task Scheduler job Gracechase-IG-Reel-All-I-Need is Ready. Next run 2026-11-05 4:50pm Mountain. media_publish at 5:00pm. Not an owner task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T008",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T009",
+      "title": "In YouTube Studio, on https://www.youtube.com/watch?v=Fh-bg9WbIFg, add...",
+      "due": null,
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "In YouTube Studio, on https://www.youtube.com/watch?v=Fh-bg9WbIFg, add https://music.apple.com/us/album/all-i-need-christmas-version-live/6830371328 to the description and to the pinned comment that starts with Christmas Window. Do not change the title or either thumbnail. Do not call videos.update. The public title on Nov 4 was Gracechase - All I Need (Christmas Version) | Live Concert Video | Christmas Worship. Studio has history in this PC's Chrome. Do the edit when that screen is allowed.",
+      "links": [
+        "https://www.youtube.com/watch?v=Fh-bg9WbIFg",
+        "https://music.apple.com/us/album/all-i-need-christmas-version-live/6830371328"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Read-only check on Nov 4: the description has the Christmas Window Apple link (6821818870), not the live single (6830371328). The pinned comment has no Apple link. Do not call videos.update while the thumbnail test is running.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T009",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T010",
+      "title": "Tuesday Nov 3 posts stay unsent",
+      "due": null,
+      "status": "noted",
+      "section": "Agents",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Tuesday Nov 3 posts stay unsent. Agents, November 4: the Facebook post and the Instagram still and Story would point at Fh-bg9WbIFg during the ad test, and strategy.md says organic Facebook and Instagram posts link to other videos. The Community post has no API, and a missed post is not caught up on this screen. No decision needed.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Informational. Tuesday Nov 3 posts stay unsent. No decision needed.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T010",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T011",
+      "title": "ASSET NEEDED: Face pngs for Earl \"Shady\" Pruitt, Luther \"Mesh\" McCall, and Abner...",
+      "due": "2026-11-07",
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T16:50:13-07:00",
+      "completed_by": "owner (board)",
+      "instructions": "ASSET NEEDED: Face pngs for Earl \"Shady\" Pruitt, Luther \"Mesh\" McCall, and Abner \"Bedgo\" Dobbins, so a Sackbuts still can show them. Each file is a clear front or three-quarter face, png, about 1024 px or larger on the long side, no text on it. Save as `E:\\Music\\Art\\The Group\\Earl Shady Pruitt\\Earl Shady Pruitt.png` and the same folder-and-file pattern for the other two. For every Christmas lyric video that would show them. Proposed by Fri Nov 7, 2026. Empty scene plates do not need these.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:50:06-07:00",
+          "text": "Face and body shots added to E:\\Music\\The Sackbuts\\Art\\The Guys\r\nThese can be the source of truth for future reference for the guys.",
+          "by": "owner"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T011",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: Earl, Luther, and Abner need new face pngs, and the files have to be saved on E:\\ which agents do not write."
+    },
+    {
+      "id": "T012",
+      "title": "Sackbuts Christmas: confirm whether Tue Nov 10, 2026 is the audio-ready date or a...",
+      "due": null,
+      "status": "on_hold",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Sackbuts Christmas: confirm whether Tue Nov 10, 2026 is the audio-ready date or a public album drop, and whether the weekly schedule in `social/sackbuts-christmas-album.md` still holds. Two Years Late is already on YouTube.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T15:31:55-07:00",
+          "text": "Sackbuts Christmas is on hold until end of week",
+          "by": "migration"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T012",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T013",
+      "title": "Sackbuts Christmas: say which songs get lyric videos",
+      "due": null,
+      "status": "on_hold",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Sackbuts Christmas: say which songs get lyric videos. The recommendation is the seven Christmas songs that do not already have one, in `social/sackbuts-christmas-album.md`.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T15:31:55-07:00",
+          "text": "Sackbuts Christmas is on hold until end of week",
+          "by": "migration"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T013",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T014",
+      "title": "Sackbuts Christmas: confirm the album track list",
+      "due": null,
+      "status": "on_hold",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Sackbuts Christmas: confirm the album track list. Nebo County Sleigh Ride and Eighteen Wheels and a Prayer have wavs and are not in the zip schedule.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T15:31:55-07:00",
+          "text": "Sackbuts Christmas is on hold until end of week",
+          "by": "migration"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T014",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T015",
+      "title": "Sackbuts Christmas: final wavs are still missing for Breaker, Breaker, Christmas Eve...",
+      "due": "2026-11-10",
+      "status": "on_hold",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Sackbuts Christmas: final wavs are still missing for Breaker, Breaker, Christmas Eve; The Nebo County Christmas Pageant; Twelve Days of Christmas in Nebo County; The Organ Quit in Oberndorf; and O Little Town. Put each wav in its folder under `E:\\Music\\The Sackbuts\\Songs\\`. Proposed by Tue Nov 10, 2026.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T15:31:55-07:00",
+          "text": "Sackbuts Christmas is on hold until end of week",
+          "by": "migration"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T015",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T016",
+      "title": "Sackbuts Christmas: say whether the wavs already on disk for Stuck in a Stable on...",
+      "due": null,
+      "status": "on_hold",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Sackbuts Christmas: say whether the wavs already on disk for Stuck in a Stable on Christmas and Mama's Fruitcake are the final masters.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T15:31:55-07:00",
+          "text": "Sackbuts Christmas is on hold until end of week",
+          "by": "migration"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T016",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T017",
+      "title": "Sackbuts Christmas: the writer name for the credit line",
+      "due": null,
+      "status": "on_hold",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Sackbuts Christmas: the writer name for the credit line. The upload kit still says [your name].",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T15:31:55-07:00",
+          "text": "Sackbuts Christmas is on hold until end of week",
+          "by": "migration"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T017",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T018",
+      "title": "Sackbuts Christmas: the live Two Years Late description still has [Sackbuts channel...",
+      "due": null,
+      "status": "on_hold",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Sackbuts Christmas: the live Two Years Late description still has [Sackbuts channel link] and [Gracechase channel link]. This prep does not edit that video.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T15:31:55-07:00",
+          "text": "Sackbuts Christmas is on hold until end of week",
+          "by": "migration"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T018",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T019",
+      "title": "Decision: Spotify Canvas is vertical 9:16",
+      "due": null,
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "Decision: Spotify Canvas is vertical 9:16. Moses, November 3: Firefly is not locked to 16:9. Select Aspect ratio, including 9:16. Dream Machine follows the first-frame plate and does not get an aspect set. Canvas stills are not made yet. Briefs are in social/canvas/BRIEFS.md.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T019",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T020",
+      "title": "TikTok draft. The gold G is on the App icon",
+      "due": null,
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "TikTok draft. The gold G is on the App icon. Do not refresh that page. Do not click Submit for review. November 4: https://www.gracechase.com/ is verified, and the approved terms are live at https://www.gracechase.com/terms. Moses approved one private test post. The form shows Category Music, Web, the website, both policy URLs, and the explanation. Save was not clicked again, because the last Save cleared fields and the demo video is still missing. The redirect field is not on the screen, and there is no TikTok user token, so the private post has not been sent.",
+      "links": [
+        "https://www.gracechase.com/",
+        "https://www.gracechase.com/terms"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "TikTok app form is agent work. Do not click Submit for review. Do not refresh the open form.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T020",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T021",
+      "title": "Pin the comment on https://www.youtube.com/watch?v=Fh-bg9WbIFg The comment starts with...",
+      "due": null,
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "Pin the comment on https://www.youtube.com/watch?v=Fh-bg9WbIFg The comment starts with \"Christmas Window, the album this song is on.\" Click the three dots on that comment, then **Pin**.",
+      "links": [
+        "https://www.youtube.com/watch?v=Fh-bg9WbIFg"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T021",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T022",
+      "title": "Thumbnail test. Moses added `Thumbnail B.png` on November 3",
+      "due": null,
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "Thumbnail test. Moses added `Thumbnail B.png` on November 3. Leave it alone. Adding or changing an image stops the test. A wide third image waits for the next promoted video.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T022",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T023",
+      "title": "Meta token. Saved November 3",
+      "due": null,
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "Meta token. Saved November 3. Page token is type PAGE and does not expire. Instagram @_gracechase_ is linked. Values are in the Windows user variables, not in this file.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T023",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T024",
+      "title": "Check https://www.youtube.com/watch?v=Fh-bg9WbIFg until the YouTube Music song bar...",
+      "due": null,
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Check https://www.youtube.com/watch?v=Fh-bg9WbIFg until the YouTube Music song bar names All I Need (Christmas Version). Then in Studio run a Title only test. Keep the exact words All I Need (Christmas Version) in every title. The current title stays first. On Nov 4 the public HTML had the title and the word ALBUM, and no musicConfig marker.",
+      "links": [
+        "https://www.youtube.com/watch?v=Fh-bg9WbIFg"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Nov 4 public watch-page HTML still has no musicConfig marker. Title test waits. Not an owner task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T024",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T025",
+      "title": "Reply `go`. Moses said proceed at 7:39pm",
+      "due": null,
+      "status": "done",
+      "section": "When the posts should go out",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "Reply `go`. Moses said proceed at 7:39pm. YouTube Short `Ws_LanSqp3U` and Facebook Reel `1150288730782473` are scheduled for Thursday, November 5, 5:00pm Mountain. Neither is public now. The Short's related video is the long concert video. Instagram was skipped, because scheduling it would publish now. November 4: the four X values are saved in the Windows user variables on this PC. The one post is live at https://x.com/_Gracechase_/status/2118087083831308387 and includes the clip. X does not get a second post. Moses added the card, set the account spending limit to $200, and said to publish the $70 test. The draft is still off until the audience is narrowed and the phone check is cleared.",
+      "links": [
+        "https://x.com/_Gracechase_/status/2118087083831308387"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T025",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T026",
+      "title": "November 4. Moses added Social Media Pack to Christmas Window and to the All I Need...",
+      "due": null,
+      "status": "done",
+      "section": "Done",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "November 4. Moses added Social Media Pack to Christmas Window and to the All I Need live single. Every new Gracechase release gets that pack.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T026",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T027",
+      "title": "November 4. Moses added the All I Need Short thumbnail himself",
+      "due": null,
+      "status": "done",
+      "section": "Done",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "November 4. Moses added the All I Need Short thumbnail himself. The Firefly candidates were not used.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T027",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T028",
+      "title": "November 3. Threads. @_gracechase_ is a tester, the invite is accepted, and the token...",
+      "due": null,
+      "status": "done",
+      "section": "Done",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "November 3. Threads. @_gracechase_ is a tester, the invite is accepted, and the token and app secret are saved. The app was not published.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T028",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T029",
+      "title": "November 3. Apple Music for Artists",
+      "due": null,
+      "status": "done",
+      "section": "Done",
+      "created": "2026-11-04T15:31:55-07:00",
+      "completed_at": "2026-11-04T15:31:55-07:00",
+      "completed_by": "owner (tasks.md)",
+      "instructions": "November 3. Apple Music for Artists. Signed in and read only. No image, no spotlight, no Q&A answers. Genre Christian & Gospel. Nothing was changed.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "tasks.md",
+      "md_id": "T029",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": ""
+    },
+    {
+      "id": "T030",
+      "title": "Let your phone open this task list",
+      "due": null,
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:35:05-07:00",
+      "completed_at": "2026-11-04T18:50:29-07:00",
+      "completed_by": "owner (board)",
+      "instructions": "This lets your phone, on the same home Wi-Fi, open this task list. It does not open the list to the internet.\n\nOn this PC:\n\n1. Click Start.\n2. Type PowerShell.\n3. Right-click Windows PowerShell.\n4. Click Run as administrator.\n5. If a window says Do you want to allow this app to make changes to your device?, click Yes.\n6. Paste the line below and press Enter. It tells Windows that Ethernet 2, the cable network on this PC, is your home network.\n\n```\nSet-NetConnectionProfile -InterfaceAlias 'Ethernet 2' -NetworkCategory Private\n```\n\n7. Paste this second line and press Enter. It lets phones on that home network open this task list. The number 8790 is the door this list uses. Gracechase board 8790 is the name Windows stores for this permission.\n\n```\nNew-NetFirewallRule -DisplayName 'Gracechase board 8790' -Direction Inbound -Protocol TCP -LocalPort 8790 -Profile Private -RemoteAddress LocalSubnet -Action Allow\n```\n\n8. On your phone, open http://192.168.1.59:8790/\n\nYou should see the Gracechase task list on the phone.\n\nThen tap Complete.",
+      "links": [
+        "http://192.168.1.59:8790/"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T15:37:18-07:00",
+          "text": "After the board started: pythonw.exe has an inbound Block rule on the Public profile. Set Ethernet 2 to Private, then add the Private LocalSubnet rule for TCP 8790. Do not switch the pythonw Public rule to Allow.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T030",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Admin elevation: the private-network firewall commands need an elevated PowerShell. Agents cannot click the UAC prompt.",
+      "priority": "medium",
+      "checked": "On November 4, 2026 http://192.168.1.59:8790/ returned 200 from this PC and the server is listening on all addresses, but no firewall rule for port 8790 was found. The phone-opening step is not confirmed done."
+    },
+    {
+      "id": "T031",
+      "title": "Approve ad copy T2: Let My Heart Find Christmas ($60 Meta test, Nov 16-22)",
+      "due": "2026-11-12",
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:47:42-07:00",
+      "completed_at": "2026-11-04T16:55:44-07:00",
+      "completed_by": "owner (board)",
+      "instructions": "Approve **one** primary text (A or B) for the second Meta test. Reject the other. Add a comment on any line you want changed.\n\n- Destination: the Let My Heart Find Christmas YouTube video.\n- Budget: $60 lifetime, 7 days, same audience as the All I Need test. Inside the $300 test cap.\n- The 20-45 second clip is approved separately in clip batch 1. No clip, no ad.\n- Headline, description, and button are listed below too.\n\nAfter you approve, the team builds the ad as a draft. You publish it in Ads Manager on Nov 16 (or give the team ads access). Full copy: `social/ad-copy.md`.",
+      "links": [
+        "https://www.youtube.com/watch?v=Z-NfhHJEkPY"
+      ],
+      "approval_items": [
+        {
+          "key": "t2-primary-a",
+          "kind": "text",
+          "path_or_text": "\"Lord, let me know You're here tonight / I'm blinded by the Christmas lights.\"\n\nLast Christmas, more than 90,000 people found this song on YouTube. Let My Heart Find Christmas is a prayer for the quiet under all the noise. The full video is on YouTube.\n\nWritten by Rebekah Shiloh Hoggatt. Sung and produced with Suno. The people on screen are fictional characters, made with AI. Cut by Adam Hoggatt.",
+          "caption": "Primary text A"
+        },
+        {
+          "key": "t2-primary-b",
+          "kind": "text",
+          "path_or_text": "\"Is it really Christmas?\"\n\nSome years the lights are up before your heart is. Let My Heart Find Christmas is our family's prayer for that kind of year. The full video is on YouTube.\n\nWritten by Rebekah Shiloh Hoggatt. Sung and produced with Suno. The people on screen are fictional characters, made with AI. Cut by Adam Hoggatt.",
+          "caption": "Primary text B"
+        },
+        {
+          "key": "t2-headline",
+          "kind": "text",
+          "path_or_text": "Let My Heart Find Christmas - Official Music Video",
+          "caption": "Headline"
+        },
+        {
+          "key": "t2-desc-button",
+          "kind": "text",
+          "path_or_text": "Description: Watch on YouTube. Button: Watch More.",
+          "caption": "Description and button"
+        }
+      ],
+      "approvals": {
+        "t2-primary-b": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T16:55:07-07:00"
+        },
+        "t2-desc-button": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T16:55:30-07:00"
+        }
+      },
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T031",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new ad copy: pick primary text A or B for the $60 Meta test of Let My Heart Find Christmas."
+    },
+    {
+      "id": "T032",
+      "title": "Approve ad copy T3: YouTube in-feed test ($50 Google Ads, Nov 19-25)",
+      "due": "2026-11-14",
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:47:43-07:00",
+      "completed_at": "2026-11-04T16:57:26-07:00",
+      "completed_by": "owner (board)",
+      "instructions": "Approve the copy for a $50 YouTube in-feed test: people searching Christmas worship on YouTube see our video, so views and subscribers land on YouTube itself. The team picks the video on Nov 16, whichever did better on its own, so approve both sets.\n\n- $50 total, about $7 a day, max $0.05 per view, United States, in-feed only.\n- Needs a Google Ads account linked to the channel (separate task).\n\nFull plan: `social/ad-copy.md`, section T3.",
+      "links": [],
+      "approval_items": [
+        {
+          "key": "t3-lmhfc",
+          "kind": "text",
+          "path_or_text": "Headline: Let My Heart Find Christmas | Christian Christmas Song\nLine 1: A prayer for the quiet under the lights.\nLine 2: New Christmas worship from Gracechase.",
+          "caption": "If the video is Let My Heart Find Christmas"
+        },
+        {
+          "key": "t3-allineed",
+          "kind": "text",
+          "path_or_text": "Headline: All I Need (Christmas Version) | Live Christmas Worship\nLine 1: Emmanuel is here.\nLine 2: A worship song to Jesus, from Christmas Window.",
+          "caption": "If the video is All I Need (live)"
+        }
+      ],
+      "approvals": {
+        "t3-lmhfc": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T16:56:45-07:00"
+        },
+        "t3-allineed": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T16:56:48-07:00"
+        }
+      },
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T032",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new ad copy: the $50 YouTube in-feed lines for the Nov 19 test."
+    },
+    {
+      "id": "T033",
+      "title": "Approve the I Still Care ad words",
+      "due": "2026-11-23",
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:47:43-07:00",
+      "completed_at": "2026-11-04T18:38:34-07:00",
+      "completed_by": "owner (board)",
+      "instructions": "This approves the ad words for I Still Care About Your Christmas, so they are ready if that video is public by Thanksgiving and an earlier ad test did well. Approving does not publish the ad.\n\nOn your phone, on this page:\n\n1. Read the section titled Primary text.\n2. If the words are right, tap Approve. If they are not, type what to change in Comment, then tap Reject.\n3. Read the section titled Headline.\n4. Tap Approve or Reject the same way.\n\nYou should see a green box that says Approved on each section you approved, or a red box that says Rejected on a section you rejected. The line under the title should say 2 of 2 approved if you approved both.\n\nThen tap Complete.",
+      "links": [],
+      "approval_items": [
+        {
+          "key": "isc-primary",
+          "kind": "text",
+          "path_or_text": "\"You said you still care about my Christmas / You still wanna be my friend.\"\n\nI Still Care About Your Christmas is the opening song on our album Christmas Window. The full video is on YouTube.\n\nWritten by Rebekah Shiloh Hoggatt. Sung and produced with Suno. The people on screen are fictional characters, made with AI. Cut by Adam Hoggatt.",
+          "caption": "Primary text"
+        },
+        {
+          "key": "isc-headline",
+          "kind": "text",
+          "path_or_text": "I Still Care About Your Christmas - Official Music Video",
+          "caption": "Headline"
+        }
+      ],
+      "approvals": {
+        "isc-primary": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T18:38:29-07:00"
+        },
+        "isc-headline": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T18:38:32-07:00"
+        }
+      },
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T033",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new ad copy: the conditional I Still Care About Your Christmas text, only if that flight runs.",
+      "priority": "medium",
+      "checked": "On November 4, 2026 the task still has two approval items and no approve or reject decision. The words are in the ad copy file and have not been approved. This approval is not done."
+    },
+    {
+      "id": "T034",
+      "title": "Open a Google Ads account and link YouTube",
+      "due": "2026-11-16",
+      "status": "done",
+      "section": "Agents",
+      "created": "2026-11-04T15:47:43-07:00",
+      "completed_at": "2026-11-04T18:18:29-07:00",
+      "completed_by": "agent",
+      "instructions": "﻿This connects a Google Ads account to the Gracechase YouTube channel, so agents can build a $50 YouTube ad later. Don't start an ad on this visit.\n\n(The old link went to a 404 error page. Sorry about that.)\n\nOn this PC, in Google Chrome, open https://ads.google.com/aw/overview\n\n1. If Google asks you to sign in, use the Google account that manages the YouTube channel @Gracechase-music.\n2. If you see an account dashboard (a left-side menu with Campaigns), you already have an account. Skip to step 5.\n3. If you see Start now or New Google Ads account, click it. If you see Switch to Expert Mode or Create an account without a campaign, click that. Do not start a Smart campaign.\n4. Add your card when it asks, and set the time zone to Mountain Time.\n5. Click the wrench icon labeled Tools, then Data manager, then YouTube, then Link. Choose @Gracechase-music and confirm.\n6. Do not create a campaign.\n\nWhen you're done, you'll see @Gracechase-music listed as Linked on the Data manager page.\n\nThen tap Complete at the bottom of this page.\n\nIf something else goes wrong, type what you see in Add a note and tap Save note. Grace gets it and fixes the task.",
+      "links": [
+        "https://ads.google.com/aw/overview"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:09:12-07:00",
+          "text": "I get a 404 error on the page:\r\nhttps://ads.google.com/aw/signup\r\n\r\nMaybe because we already have an account?",
+          "by": "owner"
+        },
+        {
+          "time": "2026-11-04T17:13:29-07:00",
+          "text": "Grace: fixed. The old signup link 404s. The new steps start at ads.google.com/aw/overview and work whether or not you already have an account.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:25:40-07:00",
+          "text": "Grace: Adam confirmed the Google Ads account already exists and @Gracechase is linked (since Mar 17, 2026, with View counts, Remarketing, and Engagement permissions). Nothing left to do. Closed by Grace. This task should never have been assigned without checking first.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:26:09-07:00",
+          "text": "Already done: Google Ads account exists and @Gracechase linked since Mar 17, 2026. Agents should mark done; no work left.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T18:18:29-07:00",
+          "text": "Closed. On November 4, 2026 Adam confirmed the Google Ads account already exists and @Gracechase has been linked since March 17, 2026. Nothing left to do.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T034",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": "",
+      "held_from_owner": true,
+      "held_at": "2026-11-04T17:26:09-07:00"
+    },
+    {
+      "id": "T035",
+      "title": "Allow this PC's mouse and screen for 1 hour",
+      "due": "2026-11-09",
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:47:43-07:00",
+      "completed_at": "2026-11-04T16:58:25-07:00",
+      "completed_by": "owner (board)",
+      "instructions": "This lets agents use the mouse and screen on this PC, so they can finish the YouTube sign-in setup in Chrome.\n\nOn your phone, open this page. Tap ☰ if you do not see the sidebar. The sidebar is on the left.\n\n1. Read the line under PC screen. It should say Agents: not allowed.\n2. In Allow, choose 1 hour if you want it to stop by itself, or Until I turn it off if you want it to stay on. Then tap Allow.\n3. On this PC, leave Google Chrome open.\n\nIf you chose 1 hour, the line should say Agents: allowed until, and a time about one hour from now. If you chose Until I turn it off, the line should say Agents: allowed (no limit). Stop shows while it is allowed.\n\nThen tap Complete.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T035",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Google sign-in: Chrome on this PC is already signed in to project gracechase-posts, and agents cannot use that screen while the host-screen switch is off.",
+      "priority": "high"
+    },
+    {
+      "id": "T036",
+      "title": "Register the songs with BMI, The MLC, and SoundExchange",
+      "due": "2026-11-20",
+      "status": "on_hold",
+      "section": "Agents",
+      "created": "2026-11-04T15:47:43-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This registers the songs so the writers and Gracechase Music get paid for plays that DistroKid does not collect. Each site is free to open. If one is already done, say which in Add a note.\n\nOn this PC, in Google Chrome:\n\n1. Open https://join.bmi.com/ . The page title is BMI Online Affiliation. Click Online Affiliation. Do not click Publisher Affiliation. Register each writer under the name printed in the song credits, then register the songs. Start with Let My Heart Find Christmas, To Hear the Angels Sing, I Still Care About Your Christmas, All I Need, and This Is How You Christmas.\n2. Open https://portal.themlc.com/sign-up . The page title is MLC. Create the account for Gracechase Music as a self-administered publisher, and register those same songs.\n3. Open https://register.soundexchange.com/ . Register as the artist and again as the rights owner. The rights owner name is Gracechase Music.\n\nYou should be signed in at all three sites, with those songs listed, not still sitting on a sign-up form.\n\nThen tap Complete.",
+      "links": [
+        "https://join.bmi.com/",
+        "https://portal.themlc.com/sign-up",
+        "https://register.soundexchange.com/"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:39:23-07:00",
+          "text": "Please report back how much impact this will have on our revenue. If near zero, let's wait until we have more exposure. If there is a potential for real income here, send it back and I'll sign up when I have time.",
+          "by": "owner"
+        },
+        {
+          "time": "2026-11-04T17:41:40-07:00",
+          "text": "Waiting on Grace: Adam asked for a revenue-impact estimate first. If it's near zero, hold until we have more exposure; if it's real money, send it back to him.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:42:41-07:00",
+          "text": "Grace: estimate is about $10-$50/yr total at current size (BMI + MLC; SoundExchange ~$0 until on Pandora). Per Adam's rule, on hold until exposure grows. Revisit when streams/views are ~10x or after Pandora (T038). Exception noted: BMI doesn't pay retroactively, so the free BMI songwriter signup is the only one that loses money by waiting.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T18:18:29-07:00",
+          "text": "On hold per Adam on November 4, 2026. At the current audience the extra BMI, MLC, and SoundExchange money is about \\ to \\ a year, near zero. Wait until streams and views are much higher, or until Pandora is on. BMI does not pay retroactively; that exception stays noted.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T036",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": "",
+      "held_from_owner": true,
+      "held_at": "2026-11-04T17:42:41-07:00"
+    },
+    {
+      "id": "T037",
+      "title": "Two quick money checks: DistroKid stores and YouTube Earn tab",
+      "due": "2026-11-13",
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T15:47:44-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "When this PC's signed-in Chrome is usable, or the VM is signed in: DistroKid, confirm Christmas Window, the All I Need live single, and This Is How You Christmas include TikTok, Instagram/Facebook, Pandora, and Amazon. YouTube Studio Earn: confirm the Partner Program, and whether Super Thanks and Memberships are on. Write what you saw on this queue item. Do not change payout settings.",
+      "links": [
+        "https://distrokid.com/dashboard",
+        "https://studio.youtube.com"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "DistroKid and YouTube Studio both have history in this PC's Chrome. Agents do the checks when that screen is allowed. Not a dashboard tour for Adam.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T037",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T038",
+      "title": "Sign in to Pandora, Amazon Music, and Pinterest",
+      "due": "2026-11-20",
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T15:47:44-07:00",
+      "completed_at": "2026-11-04T18:09:27-07:00",
+      "completed_by": "owner (board)",
+      "instructions": "This signs you in once so Gracechase can be claimed on Pandora and Amazon Music. Leave each site signed in. Pinterest is optional.\n\nOn this PC, in Google Chrome:\n\n1. Open https://amp.pandora.com/ . The page title is Pandora AMP. Sign in and leave that tab signed in.\n2. Open https://artists.amazonmusic.com/ . The page title is Amazon Music for Artists. Sign in and leave that tab signed in.\n3. Pinterest is optional. To add it, open https://www.pinterest.com/business/create/ and create the free business account. If you do not want Pinterest, type skip Pinterest in Add a note on this page and tap Save note.\n\nYou should see Pandora AMP and Amazon Music for Artists showing you are signed in, not a sign-in form.\n\nThen tap Complete.",
+      "links": [
+        "https://amp.pandora.com/",
+        "https://artists.amazonmusic.com/",
+        "https://www.pinterest.com/business/create/"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T038",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Sign-in: Pandora AMP, Amazon Music for Artists, and Pinterest have no saved session, so the claim cannot start."
+    },
+    {
+      "id": "T039",
+      "title": "Publish the Gracechase posts OAuth app to Production",
+      "due": "2026-11-09",
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T16:44:00-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Do this when Agents may use this PC's screen is on and Chrome is open and signed in, or when a copied profile can reach the console without a new sign-in. Project id gracechase-posts. authuser 1 was the signed-in session on Nov 4.\n\nBranding: https://console.cloud.google.com/auth/branding?authuser=1&project=gracechase-posts\nApp name Gracechase. Support email: the one already on the form if Google accepts it, otherwise contact.gracechase@gmail.com. Logo: copy E:\\Music\\Art\\Gracechase\\Approved\\G.png (500x500) to a temp folder and upload that copy. Do not write E:\\. Homepage https://www.gracechase.com Privacy https://www.gracechase.com/privacy Terms https://www.gracechase.com/terms All three returned 200 on Nov 4. The site already has a privacy page. Do not draft or deploy another one.\n\nAudience: https://console.cloud.google.com/auth/audience?authuser=1&project=gracechase-posts\nClick Publish app, then Confirm. Do not submit for verification. Do not click billing, Cancel, Delete, or Get Credits.\n\nDo not click Allow on the OAuth consent screen. After publish, add one owner task: click Allow once in the OAuth Playground (connect-accounts.md YouTube steps 30-35) with why_owner naming that Google sign-in. Then save the new refresh token into the user variable YOUTUBE_REFRESH_TOKEN without printing it.\n\nOn Nov 4 the testing token's refresh_token_expires_in was 515835 seconds, about 6 days.",
+      "links": [
+        "https://console.cloud.google.com/auth/branding?authuser=1&project=gracechase-posts"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T039",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T040",
+      "title": "Claim Pandora AMP, Amazon Music for Artists, and optional Pinterest",
+      "due": "2026-11-20",
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T16:44:00-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "After T038 is signed in, claim Gracechase on Pandora AMP and Amazon Music for Artists. Pinterest only if he signed in. Do not ask for a password. Propose a Featured Track and an artist audio message for approval before anything public goes up.",
+      "links": [
+        "https://amp.pandora.com",
+        "https://artists.amazonmusic.com"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T18:20:49-07:00",
+          "text": "T038 was marked done by Adam at 6:09pm on November 4, 2026. The claim stays here. This PC's screen is not allowed right now, so Pandora and Amazon were not opened. Pinterest stays optional. Nothing public goes up until a Featured Track and an artist audio message are approved.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T040",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T041",
+      "title": "Run guest-setup.ps1 and stop at the host password",
+      "due": null,
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T16:44:00-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Once Gracechase-Worker exists, run tools/vm/guest-setup.ps1 inside the VM and stop when it asks for the host account. That password is T006. Do not type it. Do not store it in the repo.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T041",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T042",
+      "title": "Fill ISRCs on social/royalty-songs.md from DistroKid",
+      "due": "2026-11-20",
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T16:44:00-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "Read ISRCs from DistroKid for the titles in social/royalty-songs.md. Do not guess. Do this when the signed-in Chrome is usable. Leave writer cells blank unless a credit line already names the writer.",
+      "links": [
+        "https://distrokid.com/dashboard"
+      ],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [],
+      "files": [],
+      "source": "agent",
+      "md_id": "T042",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": ""
+    },
+    {
+      "id": "T043",
+      "title": "Plan: Batch 1 Christmas clips",
+      "due": "2026-11-06",
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T17:21:09-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the plan for the first Christmas clips. You approve the plan. You make the files. Nothing is generated unless you ask later.\n\nWhere: on your phone or this PC, open this page. http://192.168.1.59:8790/task/T043\n\n1. Read each plan.\n2. If the plan is right, tap Approve plan under it.\n3. If it isn't, tap Needs changes, type what should change, then tap Save this section.\n4. When every plan is answered, tap the button at the bottom. If every plan is approved, that button says Approve plan. If any plan needs changes, it says Send my notes to the team.\n\nYou should see each plan marked Plan approved, or Needs changes. Approve plan turns this into Make, still on your list. Send my notes to the team sends your notes and nothing is made.",
+      "links": [
+        "http://192.168.1.59:8790/task/T043"
+      ],
+      "approval_items": [
+        {
+          "key": "lmhfc-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Let My Heart Find Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Lord, let me know You're here tonight / I'm blinded by the Christmas lights\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-09 (2026-11-09-yt-short-lmhfc-c01); Facebook Reel on 2026-11-10 (2026-11-10-fb-reel-lmhfc-c01); Instagram Reel on 2026-11-11 (2026-11-11-ig-reel-lmhfc-c01); TikTok on 2026-11-11 (2026-11-11-tt-lmhfc-c01); Meta ad on 2026-11-16 (2026-11-16-meta-t2-start); YouTube Short on 2026-12-04 (2026-12-04-yt-short-lmhfc-c01); Facebook Reel on 2026-12-07 (2026-12-07-fb-reel-lmhfc-c01); Instagram Reel on 2026-12-07 (2026-12-07-ig-reel-lmhfc-c01); and 1 later post of the same file.\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "lmhfc-c01 — Let My Heart Find Christmas"
+        },
+        {
+          "key": "lmhfc-c02",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Let My Heart Find Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Is it really Christmas\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-10 (2026-11-10-yt-short-lmhfc-c02); TikTok on 2026-11-12 (2026-11-12-tt-lmhfc-c02); Instagram Reel on 2026-11-13 (2026-11-13-ig-reel-lmhfc-c02); YouTube Short on 2026-12-07 (2026-12-07-yt-short-lmhfc-c02); Facebook Reel on 2026-12-08 (2026-12-08-fb-reel-lmhfc-c02); Instagram Reel on 2026-12-09 (2026-12-09-ig-reel-lmhfc-c02); TikTok on 2026-12-09 (2026-12-09-tt-lmhfc-c02).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "lmhfc-c02 — Let My Heart Find Christmas"
+        },
+        {
+          "key": "lmhfc-c03",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Let My Heart Find Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Lord, let me know You're here tonight / I'm blinded by the Christmas lights\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-11 (2026-11-11-yt-short-lmhfc-c03); Facebook Reel on 2026-11-12 (2026-11-12-fb-reel-lmhfc-c03); TikTok on 2026-11-13 (2026-11-13-tt-lmhfc-c03); YouTube Short on 2026-12-08 (2026-12-08-yt-short-lmhfc-c03); TikTok on 2026-12-10 (2026-12-10-tt-lmhfc-c03); Instagram Reel on 2026-12-11 (2026-12-11-ig-reel-lmhfc-c03).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "lmhfc-c03 — Let My Heart Find Christmas"
+        },
+        {
+          "key": "lmhfc-c04",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Let My Heart Find Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Is it really Christmas\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-12 (2026-11-12-yt-short-lmhfc-c04); Facebook Reel on 2026-11-14 (2026-11-14-fb-reel-lmhfc-c04); TikTok on 2026-11-16 (2026-11-16-tt-lmhfc-c04); YouTube Short on 2026-12-10 (2026-12-10-yt-short-lmhfc-c04); Facebook Reel on 2026-12-12 (2026-12-12-fb-reel-lmhfc-c04); TikTok on 2026-12-14 (2026-12-14-tt-lmhfc-c04).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "lmhfc-c04 — Let My Heart Find Christmas"
+        },
+        {
+          "key": "thas-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: To Hear the Angels Sing.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Like a celebration of cosmic glory? / Did the sound echo far?\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-13 (2026-11-13-yt-short-thas-c01); Instagram Reel on 2026-11-15 (2026-11-15-ig-reel-thas-c01); Facebook Reel on 2026-11-16 (2026-11-16-fb-reel-thas-c01); TikTok on 2026-11-17 (2026-11-17-tt-thas-c01); YouTube Short on 2026-12-14 (2026-12-14-yt-short-thas-c01); Facebook Reel on 2026-12-15 (2026-12-15-fb-reel-thas-c01); Instagram Reel on 2026-12-16 (2026-12-16-ig-reel-thas-c01); TikTok on 2026-12-16 (2026-12-16-tt-thas-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "thas-c01 — To Hear the Angels Sing"
+        },
+        {
+          "key": "thas-c02",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: To Hear the Angels Sing.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Was it like a heavenly surge of beauty?\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-16 (2026-11-16-yt-short-thas-c02); Facebook Reel on 2026-11-17 (2026-11-17-fb-reel-thas-c02); Instagram Reel on 2026-11-18 (2026-11-18-ig-reel-thas-c02); TikTok on 2026-11-18 (2026-11-18-tt-thas-c02); YouTube Short on 2026-12-15 (2026-12-15-yt-short-thas-c02); TikTok on 2026-12-17 (2026-12-17-tt-thas-c02); Instagram Reel on 2026-12-18 (2026-12-18-ig-reel-thas-c02).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "thas-c02 — To Hear the Angels Sing"
+        },
+        {
+          "key": "thas-c03",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: To Hear the Angels Sing.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Like a celebration of cosmic glory? / Did the sound echo far?\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-17 (2026-11-17-yt-short-thas-c03); TikTok on 2026-11-19 (2026-11-19-tt-thas-c03); Instagram Reel on 2026-11-20 (2026-11-20-ig-reel-thas-c03); YouTube Short on 2026-12-17 (2026-12-17-yt-short-thas-c03); Facebook Reel on 2026-12-19 (2026-12-19-fb-reel-thas-c03); TikTok on 2026-12-21 (2026-12-21-tt-thas-c03).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "thas-c03 — To Hear the Angels Sing"
+        },
+        {
+          "key": "ebc-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Even Better Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Oh it's an even bigger Christmas every year\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-18 (2026-11-18-yt-short-ebc-c01); Facebook Reel on 2026-11-19 (2026-11-19-fb-reel-ebc-c01); TikTok on 2026-11-20 (2026-11-20-tt-ebc-c01); YouTube Short on 2026-12-18 (2026-12-18-yt-short-ebc-c01); Facebook Reel on 2026-12-21 (2026-12-21-fb-reel-ebc-c01); Instagram Reel on 2026-12-21 (2026-12-21-ig-reel-ebc-c01); TikTok on 2026-12-22 (2026-12-22-tt-ebc-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ebc-c01 — Even Better Christmas"
+        },
+        {
+          "key": "ebc-c02",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Even Better Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: But it's an even better Christmas / When you're here\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-19 (2026-11-19-yt-short-ebc-c02); Facebook Reel on 2026-11-21 (2026-11-21-fb-reel-ebc-c02); TikTok on 2026-11-23 (2026-11-23-tt-ebc-c02); YouTube Short on 2026-12-21 (2026-12-21-yt-short-ebc-c02); Facebook Reel on 2026-12-22 (2026-12-22-fb-reel-ebc-c02); Instagram Reel on 2026-12-23 (2026-12-23-ig-reel-ebc-c02); TikTok on 2026-12-23 (2026-12-23-tt-ebc-c02).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ebc-c02 — Even Better Christmas"
+        },
+        {
+          "key": "soc-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Sound of Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Love is everywhere\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-20 (2026-11-20-yt-short-soc-c01); Facebook Reel on 2026-11-23 (2026-11-23-fb-reel-soc-c01); Instagram Reel on 2026-11-23 (2026-11-23-ig-reel-soc-c01); TikTok on 2026-11-24 (2026-11-24-tt-soc-c01); YouTube Short on 2026-12-22 (2026-12-22-yt-short-soc-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "soc-c01 — Sound of Christmas"
+        },
+        {
+          "key": "soc-c02",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Sound of Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Oh, and how long have we waited / My favorite time of year\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-23 (2026-11-23-yt-short-soc-c02); Facebook Reel on 2026-11-24 (2026-11-24-fb-reel-soc-c02); Instagram Reel on 2026-11-25 (2026-11-25-ig-reel-soc-c02); TikTok on 2026-11-25 (2026-11-25-tt-soc-c02).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "soc-c02 — Sound of Christmas"
+        },
+        {
+          "key": "joy-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Joy! Everything's Alright!.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: From Even Better Christmas. The full video is on YouTube.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-24 (2026-11-24-yt-short-joy-c01); TikTok on 2026-11-26 (2026-11-26-tt-joy-c01); Instagram Reel on 2026-11-27 (2026-11-27-ig-reel-joy-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "joy-c01 — Joy! Everything's Alright!"
+        }
+      ],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:50-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 the folder social/batches/batch-1-christmas-clips does not exist. Batch 1 is 12 new edits (lyric burned in, custom thumbnail), not a repost of an already-approved file, so it is not marked approved. It stays on the agent queue until those files are on this task.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T19:00:27-07:00",
+          "text": "Adam's 6:45pm decision: this is a plan. He makes the files. Agents do not generate them unless he asks on the Make task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T043",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: only you can approve this plan before any of these files are made.",
+      "priority": "high",
+      "checked": "2026-11-04 6:45pm. Read social/tasks.json and social/schedule.json and looked for the batch files. The files are not on disk, and this was still an agent build task. The plan is not already approved.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T17:41:52-07:00",
+      "workflow": "plan"
+    },
+    {
+      "id": "T044",
+      "title": "Plan: Batch 2 lyric cards",
+      "due": "2026-11-10",
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T17:21:09-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the plan for the Christmas Window lyric cards and carousels. You approve the plan. You make the files. Nothing is generated unless you ask later.\n\nWhere: on your phone or this PC, open this page. http://192.168.1.59:8790/task/T044\n\n1. Read each plan.\n2. If the plan is right, tap Approve plan under it.\n3. If it isn't, tap Needs changes, type what should change, then tap Save this section.\n4. When every plan is answered, tap the button at the bottom. If every plan is approved, that button says Approve plan. If any plan needs changes, it says Send my notes to the team.\n\nYou should see each plan marked Plan approved, or Needs changes. Approve plan turns this into Make, still on your list. Send my notes to the team sends your notes and nothing is made.",
+      "links": [
+        "http://192.168.1.59:8790/task/T044"
+      ],
+      "approval_items": [
+        {
+          "key": "carousel-isc",
+          "kind": "text",
+          "path_or_text": "Carousel, 1080x1350 slides.\nSong: I Still Care About Your Christmas.\nSource images: social/media/christmas-window-cover.png.\nHook: You said you still care about my Christmas\nOn screen: inventory lines only. You said you still care about my Christmas / You still wanna be my friend / We both behold the Baby / We both bow before one King\nPosts: Instagram on 2026-11-14 (2026-11-14-ig-carousel-isc); Pinterest on 2026-12-02 (2026-12-02-pin-carousel-isc).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "carousel-isc — I Still Care About Your Christmas"
+        },
+        {
+          "key": "card-isc-1",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: I Still Care About Your Christmas.\nSource images: social/media/christmas-window-cover.png.\nHook: You said you still care about my Christmas\nOn screen: inventory lines only. You said you still care about my Christmas / You still wanna be my friend / We both behold the Baby / We both bow before one King\nPosts: Pinterest on 2026-11-16 (2026-11-16-pin-card-isc-1); Instagram on 2026-11-24 (2026-11-24-ig-card-isc-1).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-isc-1 — I Still Care About Your Christmas"
+        },
+        {
+          "key": "carousel-behold",
+          "kind": "text",
+          "path_or_text": "Carousel, 1080x1350 slides.\nSong: Behold the King.\nSource images: social/media/christmas-window-cover.png.\nHook: What kind of King would give himself for us?\nOn screen: inventory lines only. Behold the King / Lying in a manger / What kind of King would give himself for us?\nPosts: Instagram on 2026-11-17 (2026-11-17-ig-carousel-behold); Pinterest on 2026-12-03 (2026-12-03-pin-carousel-behold).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "carousel-behold — Behold the King"
+        },
+        {
+          "key": "card-tihyc",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: This Is How You Christmas.\nSource images: social/media/this-is-how-you-christmas-cover.jpg.\nHook: Growing up on songs for Jesus\nOn screen: inventory lines only. This is how you Christmas / Growing up on songs for Jesus / He's the undisputed Christmas King\nPosts: Pinterest on 2026-11-17 (2026-11-17-pin-card-tihyc); Instagram on 2026-12-01 (2026-12-01-ig-card-tihyc).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-tihyc — This Is How You Christmas"
+        },
+        {
+          "key": "card-made",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Made With Love.\nSource images: social/media/christmas-window-cover.png.\nHook: Every bit was made\nOn screen: inventory lines only. Every bit was made / With love / Oh in the middle of the stress / Remember Jesus\nPosts: Pinterest on 2026-11-18 (2026-11-18-pin-card-made); Instagram on 2026-12-05 (2026-12-05-ig-card-made).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-made — Made With Love"
+        },
+        {
+          "key": "card-window-1",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Window.\nSource images: social/media/christmas-window-cover.png.\nHook: And all I want for Christmas Day\nOn screen: inventory lines only. God, I need some hope tonight / I thought that I would be alright / And all I want for Christmas Day / Is knowing I'll be home someday\nPosts: Pinterest on 2026-11-19 (2026-11-19-pin-card-window-1); Instagram on 2026-12-08 (2026-12-08-ig-card-window-1).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-window-1 — Window"
+        },
+        {
+          "key": "card-window-2",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Window.\nSource images: social/media/christmas-window-cover.png.\nHook: God, I need some hope tonight\nOn screen: inventory lines only. God, I need some hope tonight / I thought that I would be alright / And all I want for Christmas Day / Is knowing I'll be home someday\nPosts: Pinterest on 2026-11-20 (2026-11-20-pin-card-window-2); Instagram on 2026-12-12 (2026-12-12-ig-card-window-2).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-window-2 — Window"
+        },
+        {
+          "key": "carousel-tihyc",
+          "kind": "text",
+          "path_or_text": "Carousel, 1080x1350 slides.\nSong: This Is How You Christmas.\nSource images: social/media/this-is-how-you-christmas-cover.jpg.\nHook: Growing up on songs for Jesus\nOn screen: inventory lines only. This is how you Christmas / Growing up on songs for Jesus / He's the undisputed Christmas King\nPosts: Instagram on 2026-11-21 (2026-11-21-ig-carousel-tihyc); Pinterest on 2026-12-04 (2026-12-04-pin-carousel-tihyc).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "carousel-tihyc — This Is How You Christmas"
+        },
+        {
+          "key": "card-behold-1",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Behold the King.\nSource images: social/media/christmas-window-cover.png.\nHook: Behold the King\nOn screen: inventory lines only. Behold the King / Lying in a manger / What kind of King would give himself for us?\nPosts: Facebook on 2026-11-22 (2026-11-22-fb-behold); Pinterest on 2026-11-25 (2026-11-25-pin-card-behold-1); Instagram on 2026-12-22 (2026-12-22-ig-card-behold-1).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-behold-1 — Behold the King"
+        },
+        {
+          "key": "card-miracle",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Christmas Miracle.\nSource images: social/media/christmas-window-cover.png.\nHook: They wanted an inn, you provided a stable\nOn screen: inventory lines only. Do miracles still happen on Christmas? / God would you send one for Christmas? / They wanted an inn, you provided a stable\nPosts: Pinterest on 2026-11-23 (2026-11-23-pin-card-miracle); Instagram on 2026-12-15 (2026-12-15-ig-card-miracle).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-miracle — Christmas Miracle"
+        },
+        {
+          "key": "card-too-old",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Too Old For Christmas.\nSource images: social/media/christmas-window-cover.png.\nHook: Take it back to Jesus\nOn screen: inventory lines only. Take it back to Jesus / I promise you, you're not too old / The reason that we celebrate / Is the newborn baby King\nPosts: Pinterest on 2026-11-24 (2026-11-24-pin-card-too-old); Instagram on 2026-12-19 (2026-12-19-ig-card-too-old).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-too-old — Too Old For Christmas"
+        },
+        {
+          "key": "card-behold-2",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Behold the King.\nSource images: social/media/christmas-window-cover.png.\nHook: Behold the King\nOn screen: inventory lines only. Behold the King / Lying in a manger / What kind of King would give himself for us?\nPosts: Pinterest on 2026-11-26 (2026-11-26-pin-card-behold-2).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-behold-2 — Behold the King"
+        },
+        {
+          "key": "card-ain",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: All I Need (Christmas Version).\nSource images: social/media/christmas-window-cover.png.\nHook: Your love is all I need\nOn screen: inventory lines only. Lord, on that cold silent night / In a stable shined Your light / Your love is all I need / In You this Christmas I have peace\nPosts: Pinterest on 2026-11-27 (2026-11-27-pin-card-ain).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-ain — All I Need (Christmas Version)"
+        },
+        {
+          "key": "card-colorado",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: One Last Christmas in Colorado.\nSource images: social/media/christmas-window-cover.png.\nHook: This one last Christmas\nOn screen: inventory lines only. This one last Christmas / In Colorado / I'll thank the Lord / For one last Christmas in Colorado\nPosts: Pinterest on 2026-11-30 (2026-11-30-pin-card-colorado).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-colorado — One Last Christmas in Colorado"
+        },
+        {
+          "key": "card-lights",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: We'll Make Our Own Christmas Lights.\nSource images: social/media/christmas-window-cover.png.\nHook: Take a breath and hold it tight\nOn screen: inventory lines only. Christmas lights, we'll make our own Christmas lights / Take a breath and hold it tight / At least we're all right here tonight\nPosts: Pinterest on 2026-12-01 (2026-12-01-pin-card-lights).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-lights — We'll Make Our Own Christmas Lights"
+        }
+      ],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:51-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 social/batches/batch-2-lyric-cards does not exist. The cards use approved covers and quote lines, but the card images and carousels are new images, so they are not marked approved. It stays on the agent queue until those files are on this task.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T19:00:27-07:00",
+          "text": "Adam's 6:45pm decision: this is a plan. He makes the files. Agents do not generate them unless he asks on the Make task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T044",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: only you can approve this plan before any of these files are made.",
+      "priority": "medium",
+      "checked": "2026-11-04 6:45pm. Read social/tasks.json and social/schedule.json and looked for the batch files. The files are not on disk, and this was still an agent build task. The plan is not already approved.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T17:41:52-07:00",
+      "workflow": "plan"
+    },
+    {
+      "id": "T045",
+      "title": "Plan: Batch 4 long videos",
+      "due": "2026-11-13",
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T17:21:09-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the plan for the full album and the worship hour. You approve the plan. You make the files. Nothing is generated unless you ask later.\n\nWhere: on your phone or this PC, open this page. http://192.168.1.59:8790/task/T045\n\n1. Read each plan.\n2. If the plan is right, tap Approve plan under it.\n3. If it isn't, tap Needs changes, type what should change, then tap Save this section.\n4. When every plan is answered, tap the button at the bottom. If every plan is approved, that button says Approve plan. If any plan needs changes, it says Send my notes to the team.\n\nYou should see each plan marked Plan approved, or Needs changes. Approve plan turns this into Make, still on your list. Send my notes to the team sends your notes and nothing is made.",
+      "links": [
+        "http://192.168.1.59:8790/task/T045"
+      ],
+      "approval_items": [
+        {
+          "key": "christmas-window-full-album",
+          "kind": "text",
+          "path_or_text": "Long video, 16:9, with a custom thumbnail.\nSong: this song.\nSource: new edit needed. Song audio is the Christmas Window album. Cover: new footage needed.\nHook: Christmas Window, the whole album, in one video.\nOn screen: the song or album title, and no invented lyric.\nPosts: YouTube on 2026-11-19 (2026-11-19-yt-cw-full-album).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "christmas-window-full-album — this song"
+        },
+        {
+          "key": "christmas-worship-1-hour",
+          "kind": "text",
+          "path_or_text": "Long video, 16:9, with a custom thumbnail.\nSong: this song.\nSource: new footage needed. Use videos that are already released. This repo has no approved local path for those files.\nHook: About an hour of Gracechase Christmas worship, built from videos and audio we already released.\nOn screen: the song or album title, and no invented lyric.\nPosts: YouTube on 2026-11-28 (2026-11-28-yt-worship-hour).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "christmas-worship-1-hour — this song"
+        }
+      ],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:51-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 social/batches/batch-4-long-watch does not exist. Both pieces are new edits with custom thumbnails. The one-hour video uses already released videos and audio, and the new cut and thumbnail still need approval once the file exists. Not marked approved.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T19:00:27-07:00",
+          "text": "Adam's 6:45pm decision: this is a plan. He makes the files. Agents do not generate them unless he asks on the Make task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T045",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: only you can approve this plan before any of these files are made.",
+      "priority": "medium",
+      "checked": "2026-11-04 6:45pm. Read social/tasks.json and social/schedule.json and looked for the batch files. The files are not on disk, and this was still an agent build task. The plan is not already approved.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T17:41:52-07:00",
+      "workflow": "plan"
+    },
+    {
+      "id": "T046",
+      "title": "Plan: Batch 3 more clips",
+      "due": "2026-11-18",
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T17:21:09-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the plan for the next short clips. You approve the plan. You make the files. Nothing is generated unless you ask later.\n\nWhere: on your phone or this PC, open this page. http://192.168.1.59:8790/task/T046\n\n1. Read each plan.\n2. If the plan is right, tap Approve plan under it.\n3. If it isn't, tap Needs changes, type what should change, then tap Save this section.\n4. When every plan is answered, tap the button at the bottom. If every plan is approved, that button says Approve plan. If any plan needs changes, it says Send my notes to the team.\n\nYou should see each plan marked Plan approved, or Needs changes. Approve plan turns this into Make, still on your list. Send my notes to the team sends your notes and nothing is made.",
+      "links": [
+        "http://192.168.1.59:8790/task/T046"
+      ],
+      "approval_items": [
+        {
+          "key": "rprt-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Right Place, Right Time.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: From the album Set Me Free.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-25 (2026-11-25-yt-short-rprt-c01); Facebook Reel on 2026-11-26 (2026-11-26-fb-reel-rprt-c01); TikTok on 2026-11-27 (2026-11-27-tt-rprt-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "rprt-c01 — Right Place, Right Time"
+        },
+        {
+          "key": "angels-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Angels We Have Heard on High.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Our recording of this carol. The full video is on YouTube.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-26 (2026-11-26-yt-short-angels-c01); Facebook Reel on 2026-11-28 (2026-11-28-fb-reel-angels-c01); TikTok on 2026-11-30 (2026-11-30-tt-angels-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "angels-c01 — Angels We Have Heard on High"
+        },
+        {
+          "key": "angels-c02",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Angels We Have Heard on High.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Our recording of this carol. The full video is on YouTube.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-27 (2026-11-27-yt-short-angels-c02); Facebook Reel on 2026-11-30 (2026-11-30-fb-reel-angels-c02); Instagram Reel on 2026-11-30 (2026-11-30-ig-reel-angels-c02); TikTok on 2026-12-01 (2026-12-01-tt-angels-c02).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "angels-c02 — Angels We Have Heard on High"
+        },
+        {
+          "key": "hark-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Hark! The Herald Angels Sing.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Our recording of this carol. The full video is on YouTube.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-01 (2026-12-01-yt-short-hark-c01); TikTok on 2026-12-03 (2026-12-03-tt-hark-c01); Instagram Reel on 2026-12-04 (2026-12-04-ig-reel-hark-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "hark-c01 — Hark! The Herald Angels Sing"
+        },
+        {
+          "key": "ym-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Your Majesty.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: I've known a King stands above them all / He is the King of my heart\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-02 (2026-12-02-yt-short-ym-c01); Facebook Reel on 2026-12-03 (2026-12-03-fb-reel-ym-c01); TikTok on 2026-12-04 (2026-12-04-tt-ym-c01); YouTube Short on 2027-01-04 (2027-01-04-yt-short-ym-c01); Facebook Reel on 2027-01-05 (2027-01-05-fb-reel-ym-c01); Instagram Reel on 2027-01-06 (2027-01-06-ig-reel-ym-c01); TikTok on 2027-01-06 (2027-01-06-tt-ym-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-c01 — Your Majesty"
+        },
+        {
+          "key": "hark-c02",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Hark! The Herald Angels Sing.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Our recording of this carol. The full video is on YouTube.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-03 (2026-12-03-yt-short-hark-c02); Facebook Reel on 2026-12-05 (2026-12-05-fb-reel-hark-c02); TikTok on 2026-12-07 (2026-12-07-tt-hark-c02).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "hark-c02 — Hark! The Herald Angels Sing"
+        },
+        {
+          "key": "rprt-c02",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Right Place, Right Time.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: From the album Set Me Free.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-09 (2026-12-09-yt-short-rprt-c02); Facebook Reel on 2026-12-10 (2026-12-10-fb-reel-rprt-c02); TikTok on 2026-12-11 (2026-12-11-tt-rprt-c02).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "rprt-c02 — Right Place, Right Time"
+        },
+        {
+          "key": "ain-bridge",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: All I Need (Christmas Version) Live.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Emmanuel is here\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-11 (2026-12-11-yt-short-ain-bridge); Instagram Reel on 2026-12-13 (2026-12-13-ig-reel-ain-bridge); Facebook Reel on 2026-12-14 (2026-12-14-fb-reel-ain-bridge); TikTok on 2026-12-15 (2026-12-15-tt-ain-bridge).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ain-bridge — All I Need (Christmas Version) Live"
+        },
+        {
+          "key": "ym-c02",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Your Majesty.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: I've known a King stands above them all / He is the King of my heart\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-16 (2026-12-16-yt-short-ym-c02); Facebook Reel on 2026-12-17 (2026-12-17-fb-reel-ym-c02); TikTok on 2026-12-18 (2026-12-18-tt-ym-c02); YouTube Short on 2027-01-05 (2027-01-05-yt-short-ym-c02).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-c02 — Your Majesty"
+        },
+        {
+          "key": "rprt-c03",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Right Place, Right Time.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: From the album Set Me Free.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-23 (2026-12-23-yt-short-rprt-c03).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "rprt-c03 — Right Place, Right Time"
+        }
+      ],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:51-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 social/batches/batch-3-more-clips does not exist. These are new short edits, same kind as Batch 1, not a repost of an already-approved file. Not marked approved. It stays on the agent queue until the files are on this task.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T19:00:27-07:00",
+          "text": "Adam's 6:45pm decision: this is a plan. He makes the files. Agents do not generate them unless he asks on the Make task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T046",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: only you can approve this plan before any of these files are made.",
+      "priority": "medium",
+      "checked": "2026-11-04 6:45pm. Read social/tasks.json and social/schedule.json and looked for the batch files. The files are not on disk, and this was still an agent build task. The plan is not already approved.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T17:41:52-07:00",
+      "workflow": "plan"
+    },
+    {
+      "id": "T047",
+      "title": "Plan: Batch 6 Spotify Canvas",
+      "due": "2026-11-21",
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T17:21:09-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the plan for the Spotify Canvas loops. You approve the plan. You make the files. Nothing is generated unless you ask later.\n\nWhere: on your phone or this PC, open this page. http://192.168.1.59:8790/task/T047\n\n1. Read each plan.\n2. If the plan is right, tap Approve plan under it.\n3. If it isn't, tap Needs changes, type what should change, then tap Save this section.\n4. When every plan is answered, tap the button at the bottom. If every plan is approved, that button says Approve plan. If any plan needs changes, it says Send my notes to the team.\n\nYou should see each plan marked Plan approved, or Needs changes. Approve plan turns this into Make, still on your list. Send my notes to the team sends your notes and nothing is made.",
+      "links": [
+        "http://192.168.1.59:8790/task/T047"
+      ],
+      "approval_items": [
+        {
+          "key": "all-i-need-christmas-version",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: All I Need (Christmas Version).\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: Lord, on that cold silent night\nOn screen: no words.\nPosts: Spotify on 2026-11-30 (2026-11-30-sp-canvas-all-i-need-christmas-version).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "all-i-need-christmas-version — All I Need (Christmas Version)"
+        },
+        {
+          "key": "all-i-need-christmas-version-live",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: All I Need (Christmas Version) Live.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: Lord, on that cold silent night\nOn screen: no words.\nPosts: Spotify on 2026-12-01 (2026-12-01-sp-canvas-all-i-need-christmas-version-live).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "all-i-need-christmas-version-live — All I Need (Christmas Version) Live"
+        },
+        {
+          "key": "i-still-care-about-your-christmas",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: I Still Care About Your Christmas.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: You said you still care about my Christmas\nOn screen: no words.\nPosts: Spotify on 2026-12-02 (2026-12-02-sp-canvas-i-still-care-about-your-christmas).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "i-still-care-about-your-christmas — I Still Care About Your Christmas"
+        },
+        {
+          "key": "made-with-love",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: Made With Love.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: Every bit was made\nOn screen: no words.\nPosts: Spotify on 2026-12-03 (2026-12-03-sp-canvas-made-with-love).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "made-with-love — Made With Love"
+        },
+        {
+          "key": "window",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: Window.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: God, I need some hope tonight\nOn screen: no words.\nPosts: Spotify on 2026-12-04 (2026-12-04-sp-canvas-window).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "window — Window"
+        },
+        {
+          "key": "christmas-miracle",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: Christmas Miracle.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: Do miracles still happen on Christmas?\nOn screen: no words.\nPosts: Spotify on 2026-12-07 (2026-12-07-sp-canvas-christmas-miracle).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "christmas-miracle — Christmas Miracle"
+        },
+        {
+          "key": "too-old-for-christmas",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: Too Old For Christmas.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: Take it back to Jesus\nOn screen: no words.\nPosts: Spotify on 2026-12-08 (2026-12-08-sp-canvas-too-old-for-christmas).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "too-old-for-christmas — Too Old For Christmas"
+        },
+        {
+          "key": "behold-the-king",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: Behold the King.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: Behold the King\nOn screen: no words.\nPosts: Spotify on 2026-12-09 (2026-12-09-sp-canvas-behold-the-king).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "behold-the-king — Behold the King"
+        },
+        {
+          "key": "one-last-christmas-in-colorado",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: One Last Christmas in Colorado.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: This one last Christmas\nOn screen: no words.\nPosts: Spotify on 2026-12-10 (2026-12-10-sp-canvas-one-last-christmas-in-colorado).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "one-last-christmas-in-colorado — One Last Christmas in Colorado"
+        },
+        {
+          "key": "well-make-our-own-christmas-lights",
+          "kind": "text",
+          "path_or_text": "Silent Spotify Canvas loop, 3 to 8 seconds, 9:16, no audio. No title and no artist name in the frame.\nSong: We'll Make Our Own Christmas Lights.\nSource: social/canvas/BRIEFS.md. New footage needed.\nHook: Christmas lights, we'll make our own Christmas lights\nOn screen: no words.\nPosts: Spotify on 2026-12-11 (2026-12-11-sp-canvas-well-make-our-own-christmas-lights).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "well-make-our-own-christmas-lights — We'll Make Our Own Christmas Lights"
+        }
+      ],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:51-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 the Spotify Canvas loops are not in social/canvas. They are new silent videos, not a repost of an already-approved file. Not marked approved. It stays on the agent queue until the files are on this task.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T19:00:28-07:00",
+          "text": "Adam's 6:45pm decision: this is a plan. He makes the files. Agents do not generate them unless he asks on the Make task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T047",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: only you can approve this plan before any of these files are made.",
+      "priority": "medium",
+      "checked": "2026-11-04 6:45pm. Read social/tasks.json and social/schedule.json and looked for the batch files. The files are not on disk, and this was still an agent build task. The plan is not already approved.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T17:41:52-07:00",
+      "workflow": "plan"
+    },
+    {
+      "id": "T048",
+      "title": "Plan: Batch 5 Advent cards",
+      "due": "2026-11-28",
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T17:21:09-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the plan for the Advent, Christmas Eve, and Christmas Day cards. You approve the plan. You make the files. Nothing is generated unless you ask later.\n\nWhere: on your phone or this PC, open this page. http://192.168.1.59:8790/task/T048\n\n1. Read each plan.\n2. If the plan is right, tap Approve plan under it.\n3. If it isn't, tap Needs changes, type what should change, then tap Save this section.\n4. When every plan is answered, tap the button at the bottom. If every plan is approved, that button says Approve plan. If any plan needs changes, it says Send my notes to the team.\n\nYou should see each plan marked Plan approved, or Needs changes. Approve plan turns this into Make, still on your list. Send my notes to the team sends your notes and nothing is made.",
+      "links": [
+        "http://192.168.1.59:8790/task/T048"
+      ],
+      "approval_items": [
+        {
+          "key": "b5-venite",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Venite Adoremus Dominum (O Come, Let Us Adore The Lord).\nSource images: public/images/album-covers/Even Better Christmas Cover 1000px.jpg.\nHook: Advent Sunday.\nOn screen: a title card. Do not invent a lyric.\nPosts: Facebook on 2026-12-06 (2026-12-06-fb-venite); Pinterest on 2026-12-09 (2026-12-09-pin-b5-venite).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "b5-venite — Venite Adoremus Dominum (O Come, Let Us Adore The Lord)"
+        },
+        {
+          "key": "b5-behold-1",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Behold the King.\nSource images: social/media/christmas-window-cover.png.\nHook: What kind of King would give himself for us?\nOn screen: inventory lines only. Behold the King / Lying in a manger / What kind of King would give himself for us?\nPosts: Pinterest on 2026-12-07 (2026-12-07-pin-b5-behold-1).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "b5-behold-1 — Behold the King"
+        },
+        {
+          "key": "b5-behold-2",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Behold the King.\nSource images: social/media/christmas-window-cover.png.\nHook: Behold the King\nOn screen: inventory lines only. Behold the King / Lying in a manger / What kind of King would give himself for us?\nPosts: Pinterest on 2026-12-08 (2026-12-08-pin-b5-behold-2).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "b5-behold-2 — Behold the King"
+        },
+        {
+          "key": "b5-emmanuel",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: All I Need (Christmas Version) Live.\nSource images: new footage needed.\nHook: Lord, on that cold silent night\nOn screen: inventory lines only. Lord, on that cold silent night / In a stable shined Your light / Emmanuel is here\nPosts: Pinterest on 2026-12-10 (2026-12-10-pin-b5-emmanuel).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "b5-emmanuel — All I Need (Christmas Version) Live"
+        },
+        {
+          "key": "b5-eve",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: All I Need (Christmas Version) Live.\nSource images: new footage needed.\nHook: Lord, on that cold silent night\nOn screen: inventory lines only. Lord, on that cold silent night / In a stable shined Your light / Emmanuel is here\nPosts: Pinterest on 2026-12-24 (2026-12-24-pin-eve).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "b5-eve — All I Need (Christmas Version) Live"
+        },
+        {
+          "key": "b5-thas",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: To Hear the Angels Sing.\nSource images: public/images/album-covers/Even Better Christmas Cover 1000px.jpg.\nHook: Like a celebration of cosmic glory?\nOn screen: inventory lines only. Was it like a heavenly surge of beauty? / Like a celebration of cosmic glory? / Did the sound echo far?\nPosts: Pinterest on 2026-12-25 (2026-12-25-pin-day).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "b5-thas — To Hear the Angels Sing"
+        }
+      ],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:52-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 social/batches/batch-5-advent does not exist. These are new card images. Not marked approved. It stays on the agent queue until the files are on this task.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T19:00:28-07:00",
+          "text": "Adam's 6:45pm decision: this is a plan. He makes the files. Agents do not generate them unless he asks on the Make task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T048",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: only you can approve this plan before any of these files are made.",
+      "priority": "medium",
+      "checked": "2026-11-04 6:45pm. Read social/tasks.json and social/schedule.json and looked for the batch files. The files are not on disk, and this was still an agent build task. The plan is not already approved.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T17:41:52-07:00",
+      "workflow": "plan"
+    },
+    {
+      "id": "T049",
+      "title": "Plan: Batch 7 January worship",
+      "due": "2026-12-11",
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T17:21:10-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the plan for the January worship clips and cards. You approve the plan. You make the files. Nothing is generated unless you ask later.\n\nWhere: on your phone or this PC, open this page. http://192.168.1.59:8790/task/T049\n\n1. Read each plan.\n2. If the plan is right, tap Approve plan under it.\n3. If it isn't, tap Needs changes, type what should change, then tap Save this section.\n4. When every plan is answered, tap the button at the bottom. If every plan is approved, that button says Approve plan. If any plan needs changes, it says Send my notes to the team.\n\nYou should see each plan marked Plan approved, or Needs changes. Approve plan turns this into Make, still on your list. Send my notes to the team sends your notes and nothing is made.",
+      "links": [
+        "http://192.168.1.59:8790/task/T049"
+      ],
+      "approval_items": [
+        {
+          "key": "ym-c03",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Your Majesty.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: I've known a King stands above them all / He is the King of my heart\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-28 (2026-12-28-yt-short-ym-c03); Facebook Reel on 2026-12-29 (2026-12-29-fb-reel-ym-c03); Instagram Reel on 2026-12-30 (2026-12-30-ig-reel-ym-c03); TikTok on 2026-12-30 (2026-12-30-tt-ym-c03).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-c03 — Your Majesty"
+        },
+        {
+          "key": "ym-card-1",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Your Majesty.\nSource images: public/images/album-covers/YourMajesty_AlbumCover.png.\nHook: I've known a King stands above them all\nOn screen: inventory lines only. I've known a King stands above them all / He is the King of my heart / Your Majesty, King Jesus\nPosts: Pinterest on 2026-12-28 (2026-12-28-pin-ym-card-1); Instagram on 2026-12-29 (2026-12-29-ig-feed-your-majesty).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-card-1 — Your Majesty"
+        },
+        {
+          "key": "ym-c04",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Your Majesty.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Your Majesty, King Jesus\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-29 (2026-12-29-yt-short-ym-c04); TikTok on 2026-12-31 (2026-12-31-tt-ym-c04); Instagram Reel on 2027-01-01 (2027-01-01-ig-reel-ym-c04).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-c04 — Your Majesty"
+        },
+        {
+          "key": "ym-card-2",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Your Majesty.\nSource images: public/images/album-covers/YourMajesty_AlbumCover.png.\nHook: Your Majesty, King Jesus\nOn screen: inventory lines only. I've known a King stands above them all / He is the King of my heart / Your Majesty, King Jesus\nPosts: Pinterest on 2026-12-29 (2026-12-29-pin-ym-card-2).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-card-2 — Your Majesty"
+        },
+        {
+          "key": "ym-c05",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Your Majesty.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: I've known a King stands above them all / He is the King of my heart\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-30 (2026-12-30-yt-short-ym-c05); Facebook Reel on 2026-12-31 (2026-12-31-fb-reel-ym-c05); TikTok on 2027-01-01 (2027-01-01-tt-ym-c05).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-c05 — Your Majesty"
+        },
+        {
+          "key": "card-smf",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Set Me Free (Free Indeed).\nSource images: new footage needed.\nHook: A worship song from the album Set Me Free.\nOn screen: a title card. Do not invent a lyric.\nPosts: Pinterest on 2026-12-30 (2026-12-30-pin-card-smf).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-smf — Set Me Free (Free Indeed)"
+        },
+        {
+          "key": "ym-c06",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Your Majesty.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: Your Majesty, King Jesus\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-12-31 (2026-12-31-yt-short-ym-c06); Facebook Reel on 2027-01-02 (2027-01-02-fb-reel-ym-c06); TikTok on 2027-01-04 (2027-01-04-tt-ym-c06).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-c06 — Your Majesty"
+        },
+        {
+          "key": "card-uty",
+          "kind": "text",
+          "path_or_text": "Still image, 1080x1350.\nSong: Up to You.\nSource images: new footage needed.\nHook: The title track of the album Up to You.\nOn screen: a title card. Do not invent a lyric.\nPosts: Pinterest on 2026-12-31 (2026-12-31-pin-card-uty).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "card-uty — Up to You"
+        },
+        {
+          "key": "ym-c07",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: Your Majesty.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: I've known a King stands above them all / He is the King of my heart\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2027-01-01 (2027-01-01-yt-short-ym-c07); Facebook Reel on 2027-01-04 (2027-01-04-fb-reel-ym-c07); Instagram Reel on 2027-01-04 (2027-01-04-ig-reel-ym-c07); TikTok on 2027-01-05 (2027-01-05-tt-ym-c07).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "ym-c07 — Your Majesty"
+        }
+      ],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:52-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 social/batches/batch-7-evergreen does not exist. The extra Your Majesty clips and the title cards are new edits and new images. Not marked approved. It stays on the agent queue until the files are on this task.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T19:00:28-07:00",
+          "text": "Adam's 6:45pm decision: this is a plan. He makes the files. Agents do not generate them unless he asks on the Make task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T049",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: only you can approve this plan before any of these files are made.",
+      "priority": "medium",
+      "checked": "2026-11-04 6:45pm. Read social/tasks.json and social/schedule.json and looked for the batch files. The files are not on disk, and this was still an agent build task. The plan is not already approved.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T17:41:52-07:00",
+      "workflow": "plan"
+    },
+    {
+      "id": "T050",
+      "title": "This is a preview of the website, so you can say if the three sections look right...",
+      "due": "2026-11-06",
+      "status": "done",
+      "section": "Now",
+      "created": "2026-11-04T17:21:10-07:00",
+      "completed_at": "2026-11-04T18:37:47-07:00",
+      "completed_by": "owner (board)",
+      "instructions": "This is a preview of the website, so you can say if the three sections look right after the fixes. Nothing goes on the public site until you approve it here.\n\nOn your phone or this PC, open each link below. Each one is a copy, not the public site.\n\n1. Open http://192.168.1.59:8791/ and look at the section titled Latest releases. All I Need (Christmas Version) should be first, labeled Live single, with its own cover (the picture that says All I Need, Christmas Version, Live). Tap Watch. It opens the YouTube video in a new tab. The same section also shows the video player, so you can watch it on the page.\n2. Open http://192.168.1.59:8791/all-i-need . The listen button is the app you already chose on the site. If you chose Apple Music, the button says Play on Apple Music. If you chose a different app, it does not say Play on Apple Music; it lists the apps this single can use. This live single is on Apple Music only right now, so Apple Music is the only store in that list. Tap Listen on another app when it is shown.\n3. Open http://192.168.1.59:8791/album/christmas-window . It uses the same button. If you already chose an app, it says Play on that app, and Listen on another app is under it. Tap Listen on another app and you should see Spotify, Apple Music, YouTube Music, and Amazon Music.\n4. Back on this page, under each section, tap Approve if it looks right. If it doesn't, type what to change in the Comment box, then tap Reject.\n\nWhen you're done, each section shows a green Approved box or a red Rejected box.\n\nThen tap Complete.",
+      "links": [
+        "http://192.168.1.59:8791/",
+        "http://192.168.1.59:8791/all-i-need",
+        "http://192.168.1.59:8791/album/christmas-window"
+      ],
+      "approval_items": [
+        {
+          "key": "latest",
+          "kind": "link",
+          "path_or_text": "http://192.168.1.59:8791/",
+          "caption": "Latest releases"
+        },
+        {
+          "key": "all-i-need",
+          "kind": "link",
+          "path_or_text": "http://192.168.1.59:8791/all-i-need",
+          "caption": "All I Need page"
+        },
+        {
+          "key": "christmas-window",
+          "kind": "link",
+          "path_or_text": "http://192.168.1.59:8791/album/christmas-window",
+          "caption": "Christmas Window album page"
+        }
+      ],
+      "approvals": {
+        "latest": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T18:35:58-07:00"
+        },
+        "all-i-need": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T18:37:39-07:00"
+        },
+        "christmas-window": {
+          "decision": "approve",
+          "comment": "",
+          "time": "2026-11-04T18:37:40-07:00"
+        }
+      },
+      "notes": [
+        {
+          "time": "2026-11-04T17:30:44-07:00",
+          "text": "Pulled off Adam's list: preview not running (port 8791 down), no Preview link, no Approve items. Agents: build and start the preview, verify it loads from 192.168.1.59, put the link and approval items on the task, then return it to Adam.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:31:52-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T18:03:21-07:00",
+          "text": "Grace: got your notes on all three sections. The team is fixing them now: Latest releases gets the live concert video's own thumbnail (not Christmas Window art) and a Watch button that plays the YouTube video right there or opens it in a new tab; the All I Need and Christmas Window pages will use the same chosen-platform button and 'listen on another platform' link as the rest of the site. It comes back to you marked Fixed - try again once the preview is rebuilt and checked.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T18:18:14-07:00",
+          "text": "Fixed - try again: Latest releases now uses the live single cover (not Christmas Window) and Watch opens the YouTube video in a new tab, with the player on that section. The All I Need page uses the same chosen-app button as the rest of the site. Christmas Window uses that button too: Play on your app, plus Listen on another app for Spotify, Apple Music, YouTube Music, and Amazon Music.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T050",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Website go-live preview: only you can approve these pages before they are published.",
+      "priority": "high",
+      "checked": "On November 4, 2026 a headless browser and HTTP check of the preview showed 200 for http://192.168.1.59:8791/, /all-i-need, and /album/christmas-window. Latest releases used all-i-need-live.jpg, the label Live single, a Watch link to the YouTube video with target _blank, and a youtube.com/embed player. With no saved app, All I Need showed Listen on your app rather than a fixed Play on Apple Music button. With Spotify saved, it did not show Play on Apple Music. Christmas Window showed Play on Spotify plus Listen on another app, and that link listed Apple Music, YouTube Music, and Amazon Music.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T18:03:21-07:00",
+      "fixed_at": null
+    },
+    {
+      "id": "T051",
+      "title": "Preview the website: Christmas Window full album video",
+      "due": "2026-11-19",
+      "status": "open",
+      "section": "Agents",
+      "created": "2026-11-04T17:21:10-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "After the Christmas Window (Full Album) video goes up on YouTube on Nov 19, agents add it to gracechase.com. Nothing goes live until you OK it here.\n\nWhere: on your PC, open this page. Full address: http://192.168.1.59:8790/task/T051\n\nAgents put a \"Preview\" link at the top of this page on the evening of Nov 19.\n\n1. Tap the Preview link at the top of this page. A copy of the website opens. It is not live yet.\n2. Check that the album video plays on the page.\n3. Back on this page, tap Approve if it's right. If it isn't, type what to change in the Comment box, then tap Reject.\n4. Tap the Complete button at the bottom of the page.\n\nWhen you're done, you'll see a green Approved box (or a red Rejected box). After you approve, agents publish it and message you the live link.",
+      "links": [],
+      "approval_items": [],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:52-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 there is no Christmas Window full-album page on the preview, and the video is not on YouTube yet (the schedule posts it November 19). It stays on the agent queue until a preview link returns HTTP 200 and this task has an Approve item.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T051",
+      "md_linked": true,
+      "owner": "agent",
+      "why_owner": "",
+      "priority": "medium",
+      "checked": "On November 4, 2026 I checked the preview and the schedule. The Christmas Window full album video is not on YouTube yet, and there is no album-embed preview page returning 200. It stays off Adam's list.",
+      "held_from_owner": true,
+      "held_at": "2026-11-04T17:41:52-07:00"
+    },
+    {
+      "id": "T052",
+      "title": "Plan: I Still Care video",
+      "due": "2026-11-20",
+      "status": "open",
+      "section": "Now",
+      "created": "2026-11-04T17:21:10-07:00",
+      "completed_at": null,
+      "completed_by": null,
+      "instructions": "This is the plan for the I Still Care video. You approve the plan. You make the files. Nothing is generated unless you ask later.\n\nWhere: on your phone or this PC, open this page. http://192.168.1.59:8790/task/T052\n\n1. Read each plan.\n2. If the plan is right, tap Approve plan under it.\n3. If it isn't, tap Needs changes, type what should change, then tap Save this section.\n4. When every plan is answered, tap the button at the bottom. If every plan is approved, that button says Approve plan. If any plan needs changes, it says Send my notes to the team.\n\nYou should see each plan marked Plan approved, or Needs changes. Approve plan turns this into Make, still on your list. Send my notes to the team sends your notes and nothing is made.",
+      "links": [
+        "http://192.168.1.59:8790/task/T052"
+      ],
+      "approval_items": [
+        {
+          "key": "isc-video",
+          "kind": "text",
+          "path_or_text": "Full video, length of the song, 16:9.\nSong: I Still Care About Your Christmas.\nSource: new footage needed.\nHook: the song, only if the cut is final.\nOn screen: no invented lyric.\nPosts: YouTube premiere on 2026-11-26 (2026-11-26-yt-isc-premiere). If the cut is not final, that premiere stays quiet.\nWhy: the premiere is conditional on this cut.",
+          "caption": "I Still Care, the full video"
+        },
+        {
+          "key": "isc-c01",
+          "kind": "text",
+          "path_or_text": "Vertical clip, 15 to 45 seconds, 1080x1920, plus a custom 1080x1920 thumbnail.\nSong: I Still Care About Your Christmas.\nSource: new footage needed. Do not auto-pick a frame. A named face needs that person's face file.\nHook: A 20-45 second clip of I Still Care About Your Christmas.\nOn screen: the song title in the first second, and the lyric burned in.\nPosts: YouTube Short on 2026-11-30 (2026-11-30-yt-short-isc); Facebook Reel on 2026-12-01 (2026-12-01-fb-reel-isc-c01); Instagram Reel on 2026-12-02 (2026-12-02-ig-reel-isc-c01); TikTok on 2026-12-02 (2026-12-02-tt-isc-c01).\nWhy: the posts above need this file, and it is not made yet.",
+          "caption": "isc-c01 — I Still Care About Your Christmas"
+        }
+      ],
+      "approvals": {},
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:52-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 E:\\Music\\Music Video\\I Still Care About Your Christmas has scene clips only (Videos and Graphics). There is no finished export to watch. It stays on the agent queue until that cut exists on this task.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T19:00:28-07:00",
+          "text": "Adam's 6:45pm decision: this is a plan. He makes the files. Agents do not generate them unless he asks on the Make task.",
+          "by": "agent"
+        }
+      ],
+      "files": [],
+      "source": "agent",
+      "md_id": "T052",
+      "md_linked": true,
+      "owner": "adam",
+      "why_owner": "Approval of new creative: only you can approve this plan before any of these files are made.",
+      "priority": "high",
+      "checked": "2026-11-04 6:45pm. Read social/tasks.json and social/schedule.json and looked for the batch files. The files are not on disk, and this was still an agent build task. The plan is not already approved.",
+      "held_from_owner": false,
+      "held_at": "2026-11-04T17:41:52-07:00",
+      "workflow": "plan"
+    }
+  ]
+}

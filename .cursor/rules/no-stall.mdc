@@ -1,0 +1,72 @@
+---
+description: Do not hand Adam work an agent can do. Every owner task must say why only he can do it.
+alwaysApply: true
+---
+
+# No stall
+
+Before writing any owner task for Adam, check whether an agent can do it:
+
+- An API (Graph, YouTube, Threads, X, or TikTok once a user token exists)
+- A scheduled task on this PC that runs at the due time
+- The posting runner (`tools/post_due.py` and the scripts in `tools/`)
+- The Hyper-V VM browser (`social/browser-vm.md`)
+- A cloud agent
+
+Posting built from already-approved content is pre-approved. Do not ask him to publish it, and do not ask him to schedule it in an app when a task on this PC can publish at the due time.
+
+Owner tasks are only for:
+
+- His sign-in, 2FA, or passkey
+- Payments, or spend above an approved limit
+- Approval of new creative or ad copy
+- A website go-live preview
+- Something only a person can physically do
+
+Every owner task must say why only Adam can do it. The field is `why_owner`, and it has to name the blocker in a sentence: his sign-in, 2FA, or passkey; payment or billing; legal or tax identity; approval of new creative, ad copy, or spend; a website go-live preview; or an admin elevation, BIOS, or physical step.
+
+Every owner task's instructions use this shape, in this order:
+
+1. One sentence that says what the task is for.
+2. Which device (this PC, or his phone) and exactly where to go. That is a full clickable URL, an app name, or "the PC screen control in the left sidebar" (on a phone, tap ☰ first).
+3. Numbered steps. Each step names the button or field by the exact words on the screen.
+4. What he should see when it worked.
+5. Then "tap Complete." A review task does not say that. Its steps name **Looks good**, **Needs changes**, and the one bottom button: **Approve all — agents publish it** or **Send my notes to the team**. A plan task does not say that either. Its steps name **Approve plan**, **Needs changes**, and the bottom button **Approve plan** or **Send my notes to the team**.
+
+Do not use internal names unless the same sentence says what they are in plain language. That includes "the board", "host-screen", "authuser", a file name, and a task id. If the task needs a website, give the direct URL of the exact page, not a homepage he has to hunt through.
+
+A review stays on My tasks only while he is answering. Each section is **Looks good** or **Needs changes**. Needs changes requires **What should change?** He can change his mind. One bottom button matches the answers: disabled **Answer every section first (2 of 3 done)** until every section is answered; **Approve all — agents publish it** marks it done; **Send my notes to the team** moves it to With the team with his notes. Nothing goes live until every section looks good. A sentence above the button says which of those will happen. When the team replies, the task comes back with **Back from the team**, and only the sections that needed changes ask for a new answer.
+
+Adam makes the social and video assets (his decision, November 4, 2026, 6:45pm). Agents do not generate clips, images, lyric cards, Canvases, or videos unless he asks for that specific asset. The task is **Plan:** first, owned by him, text only: what it is, the song and the source path or "new footage needed", the hook and the on-screen text, where and when it posts, and why. Each plan item is **Approve plan** or **Needs changes**. **Approve plan** on the whole task turns it into **Make:**, still on his list. **Needs changes** sends the notes to the team. On Make, **Generate starter clips** and **Make a Premiere project** do nothing until he taps one. A Premiere project for these batches is an organized folder plus an XML or EDL import, and the note says which. A .prproj is not built for them. He uploads the file or gives its path and taps **Ready to post**. That is approved creative, and the loop schedules the planned dates.
+
+This PC's mouse and screen are one flag: `python tools/hands_off.py host-status`. Exit 0 means allowed until the time it prints. Exit 10 means do not touch the mouse or screen. A hands-off file that is still on means the same thing, not a second switch. Posting and file work keep running.
+
+Add his task with `python tools/board/tasks_cli.py add --owner adam --why-owner "..." --priority high --due YYYY-MM-DD --checked "..."`. The CLI rejects an adam task without the why sentence, without `--priority` set to high, medium, or low, and without `--checked`. Always set a due date when there is one. High means it blocks revenue or posting, or the deadline is close. Low means it is optional, such as Pinterest. `revise` also requires a priority and a `checked` note once the task is an open owner task. The phone board sorts his list overdue first, then by due date plus priority, and groups it into Do now, This week, and Later.
+
+## Check first
+
+Before an owner task is added or revised to open, an agent confirms the work is not already done. The `checked` field says when, how, and what was seen. How is an API call, a read-only look in the VM or on this PC (only when the screen is allowed), files, email, or logs.
+
+Before assigning any account, link, sign-up, or setting task, check the current state with the APIs we have: YouTube Data API channel info, Meta Graph, Google Ads if it is reachable, and Gmail for confirmation emails. If none of those can see it, a read-only browser look counts while the screen is allowed. If it is already done, mark it done and do not assign it. If it is partly done, the task asks only for the missing step. If a check is impossible without Adam, the task says "We couldn't check this because…" and the first step is for him to confirm whether it is already done.
+
+Verify every link in the instructions before assigning the task. An HTTP check is enough for a public page. A sign-in page gets checked in the browser when the screen is allowed. A guessed URL that 404s is not his problem to discover.
+
+## Ready gate
+
+An owner task stays on the agent queue until everything it depends on exists and is verified. `add --owner adam`, `revise`, and `to-owner` refuse to open it on his list otherwise. `lint` prints `not-ready` for an open owner task that fails the gate.
+
+- A website preview needs each preview link (port 8791) to return HTTP 200, and an Approve or Reject item for each page.
+- An approval task needs those items. An image, video, or audio item has to be a file that is already there. A plan task is text. It can go on his list before any media exists.
+- Any other link in the task that returns 404, or does not connect, keeps the task on the agent queue.
+- Do not generate a clip, image, lyric card, Canvas, or video to fill a post. Posts that need a file he has not made are `waiting_on_asset` in `schedule.json`, with the plan task id. The runner skips those. It does not fail them. Posts of files that already exist and are approved stay `ready` and keep auto-posting. **Ready to post** is what marks the new file approved.
+- Public TikTok posts are an agent job: the API when a token can publish publicly, or the PC browser when the screen is allowed. The unaudited app can only publish a private post. Do not make a phone task for TikTok.
+
+When he saves a note on an open task, or taps I'm stuck, that task leaves My tasks and shows on With the team, with his note and "Grace is working on this." A task pulled off his list with `to-agent` and a note shows there too. Agent-only work he never touched stays in the collapsed Team's own work section. The next run handles `tasks_cli.py queue` lines that say With the team, and Overdue for a reply first. Then `python tools/board/tasks_cli.py reply ID --text "what changed"`. That puts it back on My tasks with Back from the team — see note. A task still waiting more than 4 hours is written to `social/agent-runs/owner-inbox.md`.
+
+A calendar event that belongs to a board task starts its description with the task page, `http://192.168.1.59:8790/task/<ID>`. Never link only the main list at `http://192.168.1.59:8790/`.
+
+Agent work does not go on his board. Add it with `python tools/board/tasks_cli.py add --owner agent`. That writes `social/agent-queue.json` and leaves `## Now` alone. To take an existing line off his board, `python tools/board/tasks_cli.py to-agent ID --note "..."`. That moves the line under `## Agents` and does not change the checkbox. Never uncheck a box to hide a task.
+
+Instagram has no future-publish field. A container expires in 24 hours. Instagram scheduling is a scheduled job on this PC that uploads ahead if needed and calls `media_publish` at the due time, never earlier. That is never an owner task. Do not publish early to "schedule" it.
+
+Never uncheck his boxes in `social/tasks.md`.

@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "updated": "2026-11-04T19:00:28-07:00",
+  "items": [
+    {
+      "id": "T003",
+      "title": "Download a legal Windows 11 x64 ISO from...",
+      "status": "open",
+      "due": null,
+      "section": "Agents",
+      "instructions": "Download a legal Windows 11 x64 ISO from https://www.microsoft.com/software-download/windows11 using Download Windows 11 Disk Image (ISO). Do not run the Installation Assistant. Save it under C:\\Gracechase\\iso, not on E:\\. Check Get-FileHash against the hash on that page. The VM setup uses Pro. An unactivated copy only nags.",
+      "links": [
+        "https://www.microsoft.com/software-download/windows11"
+      ],
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Downloading the Windows ISO does not need Adam. None is on disk yet. Save it off E:\\ and check the hash.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T005",
+      "title": "After T004 creates Gracechase-Worker, install Windows unattended from the ISO in...",
+      "status": "open",
+      "due": null,
+      "section": "Agents",
+      "instructions": "After T004 creates Gracechase-Worker, install Windows unattended from the ISO in C:\\Gracechase\\iso. Do not ask Adam to sit in VMConnect for setup. Pro, or the Enterprise evaluation if that ISO was chosen. Leave the VM running and signed in to a desktop.",
+      "links": [],
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Windows setup can be unattended once the VM and the ISO exist. Adam does not need to watch it in VMConnect.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T008",
+      "title": "Thursday Nov 5, 5:00pm Mountain: agents publish the All I Need Instagram Reel",
+      "status": "open",
+      "due": null,
+      "section": "Agents",
+      "instructions": "Thursday Nov 5, 5:00pm Mountain: agents publish the All I Need Instagram Reel. Task Scheduler job `Gracechase-IG-Reel-All-I-Need` on this PC uploads the vertical file at 4:50pm Mountain and calls media_publish at 5:00pm Mountain, never earlier. Caption is the Instagram Reel block. The website field stays as it is. Not an owner task.",
+      "links": [],
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Task Scheduler job Gracechase-IG-Reel-All-I-Need is Ready. Next run 2026-11-05 4:50pm Mountain. media_publish at 5:00pm. Not an owner task.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T009",
+      "title": "In YouTube Studio, on https://www.youtube.com/watch?v=Fh-bg9WbIFg, add...",
+      "status": "open",
+      "due": null,
+      "section": "Agents",
+      "instructions": "In YouTube Studio, on https://www.youtube.com/watch?v=Fh-bg9WbIFg, add https://music.apple.com/us/album/all-i-need-christmas-version-live/6830371328 to the description and to the pinned comment that starts with Christmas Window. Do not change the title or either thumbnail. Do not call videos.update. The public title on Nov 4 was Gracechase - All I Need (Christmas Version) | Live Concert Video | Christmas Worship. Studio has history in this PC's Chrome. Do the edit when that screen is allowed.",
+      "links": [
+        "https://www.youtube.com/watch?v=Fh-bg9WbIFg",
+        "https://music.apple.com/us/album/all-i-need-christmas-version-live/6830371328"
+      ],
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Read-only check on Nov 4: the description has the Christmas Window Apple link (6821818870), not the live single (6830371328). The pinned comment has no Apple link. Do not call videos.update while the thumbnail test is running.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T010",
+      "title": "Tuesday Nov 3 posts stay unsent",
+      "status": "noted",
+      "due": null,
+      "section": "Agents",
+      "instructions": "Tuesday Nov 3 posts stay unsent. Agents, November 4: the Facebook post and the Instagram still and Story would point at Fh-bg9WbIFg during the ad test, and strategy.md says organic Facebook and Instagram posts link to other videos. The Community post has no API, and a missed post is not caught up on this screen. No decision needed.",
+      "links": [],
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Informational. Tuesday Nov 3 posts stay unsent. No decision needed.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T020",
+      "title": "TikTok draft. The gold G is on the App icon",
+      "status": "open",
+      "due": null,
+      "section": "Agents",
+      "instructions": "TikTok draft. The gold G is on the App icon. Do not refresh that page. Do not click Submit for review. November 4: https://www.gracechase.com/ is verified, and the approved terms are live at https://www.gracechase.com/terms. Moses approved one private test post. The form shows Category Music, Web, the website, both policy URLs, and the explanation. Save was not clicked again, because the last Save cleared fields and the demo video is still missing. The redirect field is not on the screen, and there is no TikTok user token, so the private post has not been sent.",
+      "links": [
+        "https://www.gracechase.com/",
+        "https://www.gracechase.com/terms"
+      ],
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "TikTok app form is agent work. Do not click Submit for review. Do not refresh the open form.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T024",
+      "title": "Check https://www.youtube.com/watch?v=Fh-bg9WbIFg until the YouTube Music song bar...",
+      "status": "open",
+      "due": null,
+      "section": "Agents",
+      "instructions": "Check https://www.youtube.com/watch?v=Fh-bg9WbIFg until the YouTube Music song bar names All I Need (Christmas Version). Then in Studio run a Title only test. Keep the exact words All I Need (Christmas Version) in every title. The current title stays first. On Nov 4 the public HTML had the title and the word ALBUM, and no musicConfig marker.",
+      "links": [
+        "https://www.youtube.com/watch?v=Fh-bg9WbIFg"
+      ],
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "Nov 4 public watch-page HTML still has no musicConfig marker. Title test waits. Not an owner task.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T036",
+      "title": "Register the songs with BMI, The MLC, and SoundExchange",
+      "status": "on_hold",
+      "due": "2026-11-20",
+      "section": "Agents",
+      "instructions": "This registers the songs so the writers and Gracechase Music get paid for plays that DistroKid does not collect. Each site is free to open. If one is already done, say which in Add a note.\n\nOn this PC, in Google Chrome:\n\n1. Open https://join.bmi.com/ . The page title is BMI Online Affiliation. Click Online Affiliation. Do not click Publisher Affiliation. Register each writer under the name printed in the song credits, then register the songs. Start with Let My Heart Find Christmas, To Hear the Angels Sing, I Still Care About Your Christmas, All I Need, and This Is How You Christmas.\n2. Open https://portal.themlc.com/sign-up . The page title is MLC. Create the account for Gracechase Music as a self-administered publisher, and register those same songs.\n3. Open https://register.soundexchange.com/ . Register as the artist and again as the rights owner. The rights owner name is Gracechase Music.\n\nYou should be signed in at all three sites, with those songs listed, not still sitting on a sign-up form.\n\nThen tap Complete.",
+      "links": [
+        "https://join.bmi.com/",
+        "https://portal.themlc.com/sign-up",
+        "https://register.soundexchange.com/"
+      ],
+      "notes": [
+        {
+          "time": "2026-11-04T17:39:23-07:00",
+          "text": "Please report back how much impact this will have on our revenue. If near zero, let's wait until we have more exposure. If there is a potential for real income here, send it back and I'll sign up when I have time.",
+          "by": "owner"
+        },
+        {
+          "time": "2026-11-04T17:41:40-07:00",
+          "text": "Waiting on Grace: Adam asked for a revenue-impact estimate first. If it's near zero, hold until we have more exposure; if it's real money, send it back to him.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:42:41-07:00",
+          "text": "Grace: estimate is about $10-$50/yr total at current size (BMI + MLC; SoundExchange ~$0 until on Pandora). Per Adam's rule, on hold until exposure grows. Revisit when streams/views are ~10x or after Pandora (T038). Exception noted: BMI doesn't pay retroactively, so the free BMI songwriter signup is the only one that loses money by waiting.",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T18:18:29-07:00",
+          "text": "On hold per Adam on November 4, 2026. At the current audience the extra BMI, MLC, and SoundExchange money is about \\ to \\ a year, near zero. Wait until streams and views are much higher, or until Pandora is on. BMI does not pay retroactively; that exception stays noted.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T037",
+      "title": "Two quick money checks: DistroKid stores and YouTube Earn tab",
+      "status": "open",
+      "due": "2026-11-13",
+      "section": "Agents",
+      "instructions": "When this PC's signed-in Chrome is usable, or the VM is signed in: DistroKid, confirm Christmas Window, the All I Need live single, and This Is How You Christmas include TikTok, Instagram/Facebook, Pandora, and Amazon. YouTube Studio Earn: confirm the Partner Program, and whether Super Thanks and Memberships are on. Write what you saw on this queue item. Do not change payout settings.",
+      "links": [
+        "https://distrokid.com/dashboard",
+        "https://studio.youtube.com"
+      ],
+      "notes": [
+        {
+          "time": "2026-11-04T16:44:00-07:00",
+          "text": "DistroKid and YouTube Studio both have history in this PC's Chrome. Agents do the checks when that screen is allowed. Not a dashboard tour for Adam.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T039",
+      "title": "Publish the Gracechase posts OAuth app to Production",
+      "status": "open",
+      "due": "2026-11-09",
+      "section": "Agents",
+      "instructions": "Do this when Agents may use this PC's screen is on and Chrome is open and signed in, or when a copied profile can reach the console without a new sign-in. Project id gracechase-posts. authuser 1 was the signed-in session on Nov 4.\n\nBranding: https://console.cloud.google.com/auth/branding?authuser=1&project=gracechase-posts\nApp name Gracechase. Support email: the one already on the form if Google accepts it, otherwise contact.gracechase@gmail.com. Logo: copy E:\\Music\\Art\\Gracechase\\Approved\\G.png (500x500) to a temp folder and upload that copy. Do not write E:\\. Homepage https://www.gracechase.com Privacy https://www.gracechase.com/privacy Terms https://www.gracechase.com/terms All three returned 200 on Nov 4. The site already has a privacy page. Do not draft or deploy another one.\n\nAudience: https://console.cloud.google.com/auth/audience?authuser=1&project=gracechase-posts\nClick Publish app, then Confirm. Do not submit for verification. Do not click billing, Cancel, Delete, or Get Credits.\n\nDo not click Allow on the OAuth consent screen. After publish, add one owner task: click Allow once in the OAuth Playground (connect-accounts.md YouTube steps 30-35) with why_owner naming that Google sign-in. Then save the new refresh token into the user variable YOUTUBE_REFRESH_TOKEN without printing it.\n\nOn Nov 4 the testing token's refresh_token_expires_in was 515835 seconds, about 6 days.",
+      "links": [
+        "https://console.cloud.google.com/auth/branding?authuser=1&project=gracechase-posts"
+      ],
+      "notes": []
+    },
+    {
+      "id": "T040",
+      "title": "Claim Pandora AMP, Amazon Music for Artists, and optional Pinterest",
+      "status": "open",
+      "due": "2026-11-20",
+      "section": "Agents",
+      "instructions": "After T038 is signed in, claim Gracechase on Pandora AMP and Amazon Music for Artists. Pinterest only if he signed in. Do not ask for a password. Propose a Featured Track and an artist audio message for approval before anything public goes up.",
+      "links": [
+        "https://amp.pandora.com",
+        "https://artists.amazonmusic.com"
+      ],
+      "notes": [
+        {
+          "time": "2026-11-04T18:20:49-07:00",
+          "text": "T038 was marked done by Adam at 6:09pm on November 4, 2026. The claim stays here. This PC's screen is not allowed right now, so Pandora and Amazon were not opened. Pinterest stays optional. Nothing public goes up until a Featured Track and an artist audio message are approved.",
+          "by": "agent"
+        }
+      ]
+    },
+    {
+      "id": "T041",
+      "title": "Run guest-setup.ps1 and stop at the host password",
+      "status": "open",
+      "due": null,
+      "section": "Agents",
+      "instructions": "Once Gracechase-Worker exists, run tools/vm/guest-setup.ps1 inside the VM and stop when it asks for the host account. That password is T006. Do not type it. Do not store it in the repo.",
+      "links": [],
+      "notes": []
+    },
+    {
+      "id": "T042",
+      "title": "Fill ISRCs on social/royalty-songs.md from DistroKid",
+      "status": "open",
+      "due": "2026-11-20",
+      "section": "Agents",
+      "instructions": "Read ISRCs from DistroKid for the titles in social/royalty-songs.md. Do not guess. Do this when the signed-in Chrome is usable. Leave writer cells blank unless a credit line already names the writer.",
+      "links": [
+        "https://distrokid.com/dashboard"
+      ],
+      "notes": []
+    },
+    {
+      "id": "T051",
+      "title": "Preview the website: Christmas Window full album video",
+      "status": "open",
+      "due": "2026-11-19",
+      "section": "Agents",
+      "instructions": "After the Christmas Window (Full Album) video goes up on YouTube on Nov 19, agents add it to gracechase.com. Nothing goes live until you OK it here.\n\nWhere: on your PC, open this page. Full address: http://192.168.1.59:8790/task/T051\n\nAgents put a \"Preview\" link at the top of this page on the evening of Nov 19.\n\n1. Tap the Preview link at the top of this page. A copy of the website opens. It is not live yet.\n2. Check that the album video plays on the page.\n3. Back on this page, tap Approve if it's right. If it isn't, type what to change in the Comment box, then tap Reject.\n4. Tap the Complete button at the bottom of the page.\n\nWhen you're done, you'll see a green Approved box (or a red Rejected box). After you approve, agents publish it and message you the live link.",
+      "links": [],
+      "notes": [
+        {
+          "time": "2026-11-04T17:31:52-07:00",
+          "text": "Not ready: needs before Adam gets it",
+          "by": "agent"
+        },
+        {
+          "time": "2026-11-04T17:41:52-07:00",
+          "text": "Not ready for Adam. On November 4, 2026 there is no Christmas Window full-album page on the preview, and the video is not on YouTube yet (the schedule posts it November 19). It stays on the agent queue until a preview link returns HTTP 200 and this task has an Approve item.",
+          "by": "agent"
+        }
+      ]
+    }
+  ]
+}

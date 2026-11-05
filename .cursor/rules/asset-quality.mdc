@@ -1,0 +1,29 @@
+---
+description: Quality bar for every public asset. Never ship a shortcut asset; make it properly or ask the owner.
+alwaysApply: true
+---
+
+# Assets: quality first, ask before shortcuts
+
+Adam makes the social and video assets (November 4, 2026, 6:45pm). Do not generate clips, images, lyric cards, Canvases, or videos unless he asked for that specific asset, by tapping **Generate starter clips** or **Make a Premiere project** on its Make task. A plan task comes first. The steps below apply only after he asks for that asset.
+
+The owner wants every public piece to be great. A fast, lower-quality route is never the default.
+
+Public assets include: video and Short thumbnails, cover art, post and Reel images, Story frames, banners, end screens, ad creative, and lyric video visuals.
+
+Before anything public goes out, for each asset it needs:
+
+1. **Make it properly.** If it is a still image and Firefly can do it, generate it with the repo's Firefly tooling (unlimited images on the owner's account, in the browser). Follow `shot-direction.mdc` and the song's plan. Produce several candidates and put them on the approval page (http://127.0.0.1:8780/) or in a folder the owner can review. Use the main agent for the creative brief and QC, not a subagent.
+2. **If it can't be made properly here** (needs the owner's art, a face or likeness decision, an app only he has, or Firefly is busy with another run), **ask.** Add a new unchecked line at the top of `## Now` in `social/tasks.md` starting with `ASSET NEEDED:` that says exactly what to make: the purpose, pixel size and aspect ratio, file type, any text on it, the mood, which song, where to save it, and the date it is needed by.
+3. **Hold that item.** Do not swap in an auto-picked video frame, a default thumbnail, a stretched or cropped old image, stock art, or a text-only card. Keep working on everything else.
+4. **Placeholder only to hit an approved date.** If the approved publish time arrives and the real asset is not ready, a placeholder may go out only if the owner already approved that, and the `ASSET NEEDED:` line must say it is a placeholder to replace.
+
+The owner approves each finished asset before it is used, the same way stills are approved. Never mark his `ASSET NEEDED:` line done yourself; he checks it.
+
+## Faces
+
+A still that shows a named person attaches that person's face file in `refs`. Hair, age, and clothes in the prompt do not stand in for the file. The file is the png named after the person, in that person's folder under `E:\Music\Art\The Group\`.
+
+For All I Need, Justice is `E:\Music\Art\The Group\Justice Turcotte\Justice Turcotte.png`. Mercy is `E:\Music\Art\The Group\Mercy Thorne\Mercy Thorne.png`. Rowan, Sasha, Noelle, Jesse, and Ellowyn each have the same kind of file in their own folder.
+
+This covers thumbnails, covers, posts, Stories, ads, Canvas stills, and lyric-video frames. An empty `refs` list is only for an empty setting plate with no people. On November 4, 2026, the All I Need Short thumbnail jobs STH01–STH03 used `"refs": []`. Mercy was recognizable. The man was not Justice. Those candidates stay unused.
