@@ -73,7 +73,7 @@ Work from `social/content-inventory.json`. For each song, pick in this order:
 3. **Lyric cards.** 2 to 4 lines on an approved image or an approved video still. 1080x1350 for Instagram and Facebook, 1000x1500 for Pinterest. He makes the card. The plan names the line and the source image.
 4. **Carousels.** 5 to 7 slides: a lyric that unfolds line by line, or "the story behind the song." He makes them. The plan lists the slides.
 5. **Quote and text posts.** A lyric line, or one true detail about the song, for Threads, X, and Community. No approval.
-6. **Credits and making-of.** "Written by Rebekah. Sung and produced with Suno. Pictures with Firefly. Cut by Adam," plus one detail of how it was made. Use approved stills or the published video. No approval unless a new image is made.
+6. **Credits and making-of.** "Written by the Hoggatt family. Brought to life with AI," plus one detail of how it was made. Use approved stills or the published video. No approval unless a new image is made.
 7. **Polls.** On Community and Instagram Stories: "Which Christmas Window song next?" or "Pick the line." No approval.
 8. **Sunday worship.** One worship song every Sunday morning across Facebook, Instagram, Threads, and Community.
 9. **Long-watch videos.** A full album and an hour of Christmas worship (`strategy.md`). These are new edits. He makes them from the plan.
@@ -81,16 +81,18 @@ Work from `social/content-inventory.json`. For each song, pick in this order:
 
 The quality bar is `.cursor/rules/asset-quality.mdc` and `shot-direction.mdc`. No auto-picked frames, no stretched images, no text-only thumbnails. Agents do not generate the asset. The plan task asks him, and the schedule entry stays `waiting_on_asset`.
 
-## 5. Plan, then he makes it
+## 5. Plan, then he makes it, then he approves each post
 
-Adam creates the social and video assets (November 4, 2026, 6:45pm). One plan task per batch is enough. Each asset on that task is a plan item.
+Adam creates the social and video assets (November 4, 2026, 6:45pm). One task per batch. Each asset on that task has its own card. The task stays on his list until every asset is ready or with the team.
 
 - The plan says what it is (type, length or size, aspect ratio), the song and the source file or "new footage needed", the hook and the on-screen text, where and when it posts, and why.
-- **Approve plan** on every item, then the bottom **Approve plan**, turns the task into **Make**. It stays on his list. Nothing is generated.
-- **Needs changes** sends his notes to the team. Nothing is made.
-- On Make, **Generate starter clips** and **Make a Premiere project** run only if he taps them. The Premiere handoff is an organized folder plus an XML or EDL import. Say which. Do not claim a .prproj for these batches.
-- **Ready to post** means the file is approved creative. Set the linked `waiting_on_asset` entries to `ready` for their planned dates.
-- If the file is not in by the post date, those posts stay `waiting_on_asset` and the runner skips them. Do not swap in something else. Text posts, links, and already-approved files keep running.
+- **Approve plan** on that card moves that asset to Make. The other cards stay put. Nothing is generated.
+- **Needs changes** sends that asset to the team. His note says what should change. Nothing is made for that asset.
+- On Make, **Generate starter clips** and **Make a Premiere project** run only if he taps them on that card. The Premiere handoff is an organized folder plus an XML or EDL import. Say which. Do not claim a .prproj for these batches. Those taps send that asset to the team, not the whole task.
+- He adds the file with **Upload finished file** (files land in `social/task-files/<task-id>/<item-id>/`) or types a path and taps **Save path**. The button then reads **Done — show me the posts**.
+- That asset goes to the team while the previews are built. `python tools/board/tasks_cli.py assets` lists them. `python tools/board/tasks_cli.py previews T044 <item-id>` builds one card per post and sends the asset back. Each card shows the platform, the Mountain time, the file in that platform's shape, the caption, the hashtags, the YouTube title and description, the link, and the cover if there is one.
+- Under **Final check** he taps **Approve post** or **Needs changes**. Approving a post approves the media, the caption, and the timing. Set that schedule row to `ready` and `approved` to true. Leave every other row alone. A post that needs changes goes back to the team; fix the caption or the file, then run `previews` again so he sees it again.
+- The bottom line only counts, for example 3 of 6 assets ready. If the file is not in by the post date, those posts stay `waiting_on_asset` and the runner skips them. Do not swap in something else. Text posts, links, and already-approved files keep running.
 
 ## 6. Posting workflow per platform
 
